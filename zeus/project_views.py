@@ -1,13 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from django.http import HttpResponse
 from utils import logger, render_json
-
 from models import Project
-
-
-def index(request):
-    return HttpResponse('Welcome, <a target="_blank" href="/logout/">logout</a>')
 
 
 # 项目相关接口
@@ -40,6 +34,7 @@ def get_all_project(request):
     except Exception as e:
         logger.error(u"获取项目失败", e)
         return render_json({'result': False, 'message': u"获取项目失败"})
+
     data = []
     for project in projects:
         data.append({

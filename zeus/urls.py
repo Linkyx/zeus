@@ -14,18 +14,28 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from .project_views import *
 from .task_views import *
 from .views import *
+from .authentication import *
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^index/$', index),
-
-
-    # 项目接口
-    url(r'^create_project/$', create_project),
-    url(r'^get_all_project/$', get_all_project)
 ]
+
+urlpatterns += patterns('zeus.project_views',
+                        # 项目接口
+                        url(r'^create_project/$', 'create_project'),
+                        url(r'^get_all_project/$', 'get_all_project')
+                        )
+urlpatterns += patterns('zeus.authentication',
+                        # 登陆校验,获取code进行并请求token
+                        url(r'^callback/$', 'callback'),
+                        url(r'^logout/$', 'logout'),
+                        )
+urlpatterns += patterns('zeus.views',
+                        url(r'^$', 'index'),
+                        )

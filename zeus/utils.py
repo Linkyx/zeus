@@ -4,7 +4,7 @@ import json
 import logging
 
 
-# 封装写日志函数(待优化)
+# 封装日志函数(待优化)
 class logger_callback:
     def __init__(self):
         pass
