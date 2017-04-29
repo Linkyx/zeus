@@ -14,7 +14,7 @@ INSTALLED_APPS = (
 )
 ```
 ```python
-    
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -25,5 +25,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
 ```
+* 运行项目之前请在项目统计目录下创建log文件夹，并创建all.log, info.log,error.log, script.log文件
+ 

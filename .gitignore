@@ -1,3 +1,4 @@
 .idea/*
 *.pyc
 zeus/settings.py
+log/*

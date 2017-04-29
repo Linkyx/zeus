@@ -6,8 +6,28 @@ class ProjectManager(models.Manager):
     """
     项目方发表
     """
-    def get_query_set(self):
-        return super(ProjectManager, self).get_query_set().filter(is_active=True)
+    def get_queryset(self):
+        return super(ProjectManager, self).get_queryset().filter(is_active=True)
+
+    def create_project(self, request, name, introduction, participant):
+        """
+        创建项目
+        :return:
+        """
+        user = request.user.id
+
+        project = self.create(name=name, owner=user, participant=participant, introduction=introduction)
+
+        return project
+
+    def get_all_project(self):
+        """
+        获取所有项目
+        :return:
+        """
+        projects = self.all()
+
+        return projects
 
 
 class Project(models.Model):
@@ -33,8 +53,8 @@ class TaskManager(models.Manager):
     """
     任务方发表
     """
-    def get_query_set(self):
-        return super(TaskManager, self).get_query_set().filter(is_active=True)
+    def get_queryset(self):
+        return super(TaskManager, self).get_queryset().filter(is_active=True)
 
 
 class Task(models.Model):
@@ -77,8 +97,8 @@ class MessageManager(models.Manager):
     """
     消息方发表
     """
-    def get_query_set(self):
-        return super(MessageManager, self).get_query_set().filter(is_active=True)
+    def get_queryset(self):
+        return super(MessageManager, self).get_queryset().filter(is_active=True)
 
 
 class Message(models.Model):

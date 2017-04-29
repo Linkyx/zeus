@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """zeus URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -15,9 +16,16 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from .project_views import *
+from .task_views import *
 from .views import *
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^index/$', index)
+    url(r'^index/$', index),
+
+
+    # 项目接口
+    url(r'^create_project/$', create_project),
+    url(r'^get_all_project/$', get_all_project)
 ]
