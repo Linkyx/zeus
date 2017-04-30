@@ -14,9 +14,10 @@ class ProjectManager(models.Manager):
         创建项目
         :return:
         """
-        user = request.user.id
-
-        project = self.create(name=name, owner=user, participant=participant, introduction=introduction)
+        user = request.session['id']
+        # 项目logo， 暂定为静态
+        logo = '/static/images/cover-media.jpg'
+        project = self.create(name=name, owner=user, participant=participant, introduction=introduction, logo=logo)
 
         return project
 
@@ -39,6 +40,7 @@ class Project(models.Model):
     owner = models.CharField(u'项目拥有者', max_length=32, blank=True, null=True)
     participant = models.CharField(u'项目参与者', max_length=32, blank=True, null=True)
     is_active = models.BooleanField(u'是否未删除', default=True)
+    logo = models.CharField(u'项目logo', blank=True, null=True, max_length=128)
     objects = ProjectManager()
 
     class Meta:
@@ -55,6 +57,37 @@ class TaskManager(models.Manager):
     """
     def get_queryset(self):
         return super(TaskManager, self).get_queryset().filter(is_active=True)
+
+    def create_task(self, request, name, introduction, participant, finish_time, level, project_id):
+        """
+        创建任务
+        :return:
+        """
+        owner = request.session['id']
+
+        task = self.create(name=name, introduction=introduction, participant=participant, finish_time=finish_time,
+                           level=level, project_id=project_id)
+
+        return task
+
+    def get_all_task(self):
+        """
+        获取所有任务
+        :return:
+        """
+        tasks = self.all()
+
+        return tasks
+
+    def update_task_user(self, task_id, participant):
+        """
+        更新任务用户
+        :return:
+        """
+        task = self.filter(pk=task_id)
+        info = task.update(participant=participant)
+
+        return info
 
 
 class Task(models.Model):
@@ -81,7 +114,7 @@ class Task(models.Model):
     status = models.CharField(u'当前状态', choices=STATUS_CHOICES, default=0, max_length=16)
     level = models.CharField(u'任务级别', choices=LEVEL_CHOICES, default=0, max_length=16)
     is_active = models.BooleanField(u'是否未删除', default=True)
-    project = models.ForeignKey(Project)
+    project_id = models.CharField(u'项目id', max_length=32, blank=True, null=True, db_index = True)
 
     objects = TaskManager()
 

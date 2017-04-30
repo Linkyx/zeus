@@ -36,6 +36,15 @@ urlpatterns += patterns('zeus.authentication',
                         url(r'^callback/$', 'callback'),
                         url(r'^logout/$', 'logout'),
                         )
+urlpatterns += patterns('zeus.task_views',
+                        # 任务接口
+                        url(r'^create_task/$', 'create_task'),
+                        url(r'^get_all_task/$', 'get_all_task'),
+                        url(r'^update_task_user/$', 'update_task_user')
+                        )
+
 urlpatterns += patterns('zeus.views',
+                        # 项目首页公共内容
                         url(r'^$', 'index'),
+                        url(r'^home/$', 'home')
                         )

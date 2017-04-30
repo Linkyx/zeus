@@ -41,7 +41,8 @@ def get_all_project(request):
             'project_name': project.name,
             'project_introduction': project.introduction,
             'project_owner': project.owner,
-            'project_participant': project.participant
+            'project_participant': project.participant,
+            'logo': project.logo
         })
 
     return render_json({'result': True, 'data': data})

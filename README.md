@@ -1,6 +1,6 @@
 # zeus
 ### 基于Django的项目管理系统
-
+#### 用于xiyoulinux兴趣小组内部使用（调用了内部的auth授权，如果个人使用的话， 需要自己维护user）
 
 * 请自行配制settings
 
