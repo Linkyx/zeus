@@ -4,9 +4,20 @@ import datetime
 import requests
 import json
 
+from django.shortcuts import render
+
 from utils import logger, render_json
 from models import Task
 from constant import LEVEL, STATUS_CHOICES
+
+
+def task_index(request):
+    """
+    任务首页
+    :param request:
+    :return:
+    """
+    return render(request, 'task_user.html', {})
 
 
 def create_task(request):
@@ -26,9 +37,9 @@ def create_task(request):
                              finish_time=finish_time,level=level, project_id=project_id)
     except Exception as e:
         logger.error(u'创建任务失败', e)
-        return render_json({'result': False, 'messgae': u'创建项目失败'})
+        return render_json({'result': False, 'messgae': u'创建任务失败'})
 
-    return render_json({'result': True, 'message': u"创建项目成功"})
+    return render_json({'result': True, 'message': u"创建任务成功"})
 
 
 def get_all_task(request):

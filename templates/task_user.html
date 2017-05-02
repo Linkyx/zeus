@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row">
+      <div class="col-sm-8 col-sm-offset-2 task-content">
+          <div style=" border-bottom: 2px solid #E5E5E5;">
+              <ul class="task-tab">
+                  <li><a class="border-bc" href="#task-today" aria-controls="task-today" role="tab" data-toggle="tab">今日任务</a></li>
+                  <li><a href="#finish" aria-controls="finish" role="tab" data-toggle="tab">已完成</a></li>
+                  <li><a href="#non-finish" aria-controls="non-finish" role="tab" data-toggle="tab">未完成</a></li>
+              </ul>
+          </div>
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active " id="task-today">.1111..</div>
+            <div role="tabpanel" class="tab-pane" id="finish">.222..</div>
+            <div role="tabpanel" class="tab-pane" id="non-finish">.333..</div>
+          </div>
+      </div>
+
+  </div>
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/task.js"></script>
+    <script>
+        $('.task-tab a').click(function (e) {
+          e.preventDefault()
+          $('.task-tab a').removeClass('border-bc');
+          $(this).addClass('border-bc')
+        })
+    </script>
+{% endblock %}

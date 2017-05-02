@@ -1,13 +1,20 @@
 # -*- coding:utf-8 -*-
 
-from django.http import HttpResponse
 from django.shortcuts import render
 
 
 def index(request):
-    user = request.session['name']
-    return HttpResponse(user)
+    return render(request, 'index.html', {
+
+    })
 
 
-def home(request):
-    return render(request, 'base.html', {})
+def user_info(request):
+    """
+    用户信息页面
+    :param request:
+    :return:
+    """
+    return render(request, 'user_info.html', {
+
+    })

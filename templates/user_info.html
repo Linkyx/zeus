@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block wrap %}
+   <nav class="navbar navbar-default" style="background-color: #fff">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+           <a class="navbar-brand" href="/">
+              <span  style="color: #3da8f5; font-weight: bold; margin-right: 20px;">Zeus</span>
+           </a>
+            <a href="#" class="navbar-brand">
+             <span>个人账户中心</span>
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                  <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding-top:10px; padding-bottom: 10px;">
+                  <span style="margin-right: 10px">{{ request.session.name }}</span>
+                  <img src="{{ request.session.avatar }}" alt="" style="width: 30px; border-radius: 50%;">
+                      <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/user_info">个人中心</a></li>
+                    <li><a href="/logout">注销</a></li>
+                  </ul>
+                </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+{% endblock %}
+{% block content %}
+    <div class="row" style="margin-top: 50px; margin-bottom: 100px">
+        <div class="col-sm-3">
+            <div class="user-info-lt">
+            <div class="dib">
+            <img src="{{ request.session.avatar }}" alt="user" class=" user-info-logo" >
+            </div>
+            <div class="dib user-info-position">
+                <p class="user-info-lt-name">{{ request.session.name }}</p>
+            </div>
+            <p class="user-info-lt-email" style="margin: 10px 0 0 50px">{{ request.session.email }}</p>
+            </div>
+            <div class="user-info-lb ">
+            <ul>
+                <li><a href="#">个人信息</a></li>
+                <li><a href="#">消息通知</a></li>
+            </ul>
+            </div>
+        </div>
+        <div class="col-sm-8 user-info-r">
+           <div class="col-sm-10"  style="margin-top: 50px;">
+               <form class="form-horizontal">
+                   <div class="form-group mb">
+                       <label for="inputEmail3" class="col-sm-2 control-label">头像</label>
+                       <img  src="{{ request.session.avatar }}" alt="user" style="width: 80px;border-radius: 50%;margin-left: 20px;">
+                        <a href="http://cn.gravatar.com/" class="btn btn-primary" style="margin-left: 100px;" target="_blank" >更改头像</a>
+                   </div>
+                   <div class="form-group mb">
+                        <label for="inputName" class="col-sm-2 control-label">昵称</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" id="inputName" placeholder="昵称">
+                        </div>
+                   </div>
+                  <div class="form-group mb">
+                      <label for="inputEmail" class="col-sm-2 control-label">邮箱</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="邮箱">
+                      </div>
+                  </div>
+                   <div class="form-group mb">
+                      <label for="inputPhone" class="col-sm-2 control-label">电话</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="inputPhone" placeholder="电话">
+                      </div>
+                  </div>
+                   <div class="form-group mb">
+                      <label for="inputWorkPlace" class="col-sm-2 control-label">工作地</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="inputWorkPlace" placeholder="工作地">
+                      </div>
+                  </div>
+                   <div class="form-group mb">
+                      <label for="inputJob" class="col-sm-2 control-label">职位</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="inputJob" placeholder="职位">
+                      </div>
+                  </div>
+                   <div class="form-group mb">
+                      <label for="inputQq" class="col-sm-2 control-label">QQ</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="inputQq" placeholder="QQ">
+                      </div>
+                  </div>
+                   <div class="form-group mb">
+                      <label for="inputWeChat" class="col-sm-2 control-label">微信</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="inputWeChat" placeholder="微信">
+                      </div>
+                  </div>
+                   <div class="form-group mb">
+                       <div class="col-sm-8 col-sm-offset-2">
+                           <a class="btn btn-primary btn-block save-handler">保存
+                           </a>
+                       </div>
+                   </div>
+               </form>
+           </div>
+        </div>
+    </div>
+{% endblock %}

@@ -38,6 +38,7 @@ urlpatterns += patterns('zeus.authentication',
                         )
 urlpatterns += patterns('zeus.task_views',
                         # 任务接口
+                        url(r'^task_index', 'task_index'),
                         url(r'^create_task/$', 'create_task'),
                         url(r'^get_all_task/$', 'get_all_task'),
                         url(r'^update_task_user/$', 'update_task_user')
@@ -46,5 +47,5 @@ urlpatterns += patterns('zeus.task_views',
 urlpatterns += patterns('zeus.views',
                         # 项目首页公共内容
                         url(r'^$', 'index'),
-                        url(r'^home/$', 'home')
+                        url(r'^user_info/$', 'user_info')
                         )
