@@ -6,7 +6,7 @@ import json
 
 from django.shortcuts import render
 
-from utils import logger, render_json
+from utils import logger, render_json, get_users
 from models import Task
 from constant import LEVEL, STATUS_CHOICES
 
@@ -54,15 +54,16 @@ def get_all_task(request):
         logger.error(u"获取任务失败", e)
         return render_json({'result': False, 'message': u"获取任务失败"})
 
+    users = get_users(request)
+
     data = []
     for task in tasks:
         # 获取用户名
         participant = task.participant.split(',')
-        payload = {'access_token': request.session['token']}
         user_name = []
         for id in participant:
-            user = requests.get('https://api.xiyoulinux.org/users/' + id, params=payload)
-            user_name.append(json.loads(user.text)['name'])
+            user = users[int(id)]
+            user_name.append(user['name'])
 
         data.append({
             'task_name': task.name,

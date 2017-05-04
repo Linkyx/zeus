@@ -3,26 +3,14 @@
 {% block content %}
     <div class="row"style="margin-top: 50px">
         <div class="col-sm-2 my-project">我拥有的项目</div><hr>
-        <a href="###" class="all-project col-sm-3">
-            <div style="margin-top: 10px">
-                <p style="font-size: 20px">创建项目</p>
-            </div>
-        </a>
-        <a href="###" class="all-project col-sm-3">
-            <div style="margin-top: 10px">
-                <p style="font-size: 20px">创建项目</p>
-            </div>
-        </a>
-        <a href="###" class="all-project col-sm-3">
-            <div style="margin-top: 10px">
-                <p style="font-size: 20px">创建项目</p>
-            </div>
-        </a>
-        <a href="###" class="all-project col-sm-3">
-            <div style="margin-top: 10px">
-                <p style="font-size: 20px">创建项目</p>
-            </div>
-        </a>
+        {% for project in owner_project %}
+            <a  data-id="{{ project.pid }}" href="/get_project_task/{{ project.pid }}" class="all-project col-sm-3" style="background-image: url('{{ project.logo }}');">
+                <div style="margin-top: 10px">
+                    <p style="font-size: 20px;" class="text-hidden"><span style="font-weight: bold">{{ project.name }}</span></p>
+                    <p style="font-size: 16px;" class="text-hidden">{{ project.intro }}　</p>
+                </div>
+            </a>
+        {% endfor %}
         <a href="###" class="create-project col-sm-3" data-toggle="modal" data-target="#myModal">
             <div style="margin-top: 30px">
                 <span class="glyphicon glyphicon-plus">
@@ -56,21 +44,6 @@
                       <div class="form-group">
                           <label for="participant-project">项目参与者</label>
                           <select  class="form-control" style="width: 100%;" multiple="multiple"  id="participant-project">
-                              <optgroup label="系统设置">
-                             <option value="1">用户管理</option>
-                             <option value="2">角色管理</option>
-                             <option value="3">部门管理</option>
-                             <option value="4">菜单管理</option>
-                             </optgroup>
-                             <optgroup label="订单管理">
-                             <option value="5">订单查询</option>
-                             <option value="6">订单导入</option>
-                             <option value="7">订单删除</option>
-                             <option value="8">订单撤销</option>
-                             </optgroup>
-                             <optgroup label="基础数据">
-                             <option value="9">基础数据维护</option>
-                             </optgroup>
                           </select>
                       </div>
                       <div class="form-group">
@@ -87,8 +60,8 @@
                     </form>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">创建</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-project">取消</button>
+                <button type="button" class="btn btn-primary" id="create-project-btn">创建</button>
               </div>
             </div>
           </div>
@@ -96,28 +69,16 @@
     </div>
 
 
-    <div class="row" style="margin-top: 50px;">
+    <div class="row" style="margin-top: 50px; margin-bottom: 200px">
         <div class="col-sm-2 my-project">我参与的项目</div><hr>
-    <a href="###" class="all-project col-sm-3">
+        {% for project in part_project %}
+            <a data-id="{{ project.pid }}" href="/get_project_task/{{ project.pid }}" class="all-project col-sm-3" style="background-image: url('{{ project.logo }}');">
             <div style="margin-top: 10px">
-                <p style="font-size: 20px">创建项目</p>
+                <p style="font-size: 20px;" class="text-hidden"><span style="font-weight: bold">{{ project.name }}</span></p>
+                    <p style="font-size: 16px;" class="text-hidden">{{ project.intro }}　</p>
             </div>
         </a>
-        <a href="###" class="all-project col-sm-3">
-            <div style="margin-top: 10px">
-                <p style="font-size: 20px">创建项目</p>
-            </div>
-        </a>
-        <a href="###" class="all-project col-sm-3">
-            <div style="margin-top: 10px">
-                <p style="font-size: 20px">创建项目</p>
-            </div>
-        </a>
-        <a href="###" class="all-project col-sm-3">
-            <div style="margin-top: 10px">
-                <p style="font-size: 20px">创建项目</p>
-            </div>
-        </a>
+        {% endfor %}
     </div>
 {% endblock %}
 

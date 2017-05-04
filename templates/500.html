@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <script>
+        layer.msg('{{ message }}', {icon: 5}, function(){
+            window.location.href = '/'
+        });
+    </script>
+{% endblock %}

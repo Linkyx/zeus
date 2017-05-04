@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 import json
 import logging
+import urllib2
+import urllib
 
 
 # 封装日志函数(待优化)
@@ -35,3 +37,40 @@ def render_json(dictionary={}):
                       }
     return HttpResponse(json.dumps(dictionary), content_type='application/json')
 
+
+def get_users(request):
+    """
+    获取所有用户
+    :param request:
+    :return:
+    """
+    # 缓存所有用户信息， id name 头像
+    try:
+        header = {'Authorization': 'Bearer ' + request.session['token']}
+        req = urllib2.Request(url='https://api.xiyoulinux.org/users?per_page=1000', headers=header)
+        data = urllib2.urlopen(req)
+        user_msg = json.loads(data.read())
+    except Exception, e:
+        return HttpResponseRedirect(request.session['old_url'])
+    users = {}
+    for item in user_msg['data']:
+        user = {'name': item['name'], 'avatar': item['avatar_url']}
+        users.update({item['id']: user})
+    users.pop(request.session['id'])
+    return users
+
+
+def refresh_user_session(request,user_msg):
+    """
+    更新session中用户信息
+    :return:
+    """
+    request.session['avatar'] = user_msg['avatar_url']
+    request.session['name'] = user_msg['name']
+    request.session['id'] = user_msg['id']
+    request.session['email'] = user_msg['email']
+    request.session['phone'] = user_msg['phone']
+    request.session['workplace'] = user_msg['workplace']
+    request.session['job'] = user_msg['job']
+    request.session['qq'] = user_msg['qq']
+    request.session['wechat'] = user_msg['wechat']

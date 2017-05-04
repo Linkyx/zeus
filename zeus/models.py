@@ -9,14 +9,12 @@ class ProjectManager(models.Manager):
     def get_queryset(self):
         return super(ProjectManager, self).get_queryset().filter(is_active=True)
 
-    def create_project(self, request, name, introduction, participant):
+    def create_project(self, request, name, introduction, participant, logo):
         """
         创建项目
         :return:
         """
         user = request.session['id']
-        # 项目logo， 暂定为静态
-        logo = '/static/images/cover-media.jpg'
         project = self.create(name=name, owner=user, participant=participant, introduction=introduction, logo=logo)
 
         return project
@@ -29,6 +27,48 @@ class ProjectManager(models.Manager):
         projects = self.all()
 
         return projects
+
+    def get_user_owner_project(self, request):
+        """
+        获取当前用户拥有
+        :return:
+        """
+        uid = request.session['id']
+
+        # 获取用户拥有的项目
+        projects = self.filter(owner=uid)
+
+        return projects
+
+    def get_user_part_project(self, request):
+        """
+        获取当前用户参与的项目
+        :return:
+        """
+        uid = str(request.session['id'])
+
+        # 获取用户拥有的项目
+        projects = self.all()
+        participant_projects = []
+        for project in projects:
+            uids = project.participant.split(',')
+            if uid in uids:
+                participant_projects.append(project)
+        return participant_projects
+
+    def is_project_user(self, request, pid):
+        """
+        判断用户是否拥有该项目的权限
+        :return:
+        """
+        projects = self.filter(pk=pid)
+
+        for project in projects:
+            if str(request.session['id']) in project.owner.split(',') or \
+                            request.session['id'] in project.participant.split(','):
+                return True
+            else:
+                return False
 
 
 class Project(models.Model):

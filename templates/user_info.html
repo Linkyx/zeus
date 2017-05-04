@@ -61,48 +61,48 @@
                    <div class="form-group mb">
                         <label for="inputName" class="col-sm-2 control-label">昵称</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control" id="inputName" placeholder="昵称">
+                          <input type="text" class="form-control" id="inputName" placeholder="昵称" value="{{ request.session.name }}">
                         </div>
                    </div>
                   <div class="form-group mb">
                       <label for="inputEmail" class="col-sm-2 control-label">邮箱</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputEmail" placeholder="邮箱">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="邮箱" value="{{ request.session.email }}">
                       </div>
                   </div>
                    <div class="form-group mb">
                       <label for="inputPhone" class="col-sm-2 control-label">电话</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputPhone" placeholder="电话">
+                        <input type="text" class="form-control" id="inputPhone" placeholder="电话" value="{{ request.session.phone }}">
                       </div>
                   </div>
                    <div class="form-group mb">
                       <label for="inputWorkPlace" class="col-sm-2 control-label">工作地</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputWorkPlace" placeholder="工作地">
+                        <input type="text" class="form-control" id="inputWorkPlace" placeholder="工作地" value="{{ request.session.workplace }}">
                       </div>
                   </div>
                    <div class="form-group mb">
                       <label for="inputJob" class="col-sm-2 control-label">职位</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputJob" placeholder="职位">
+                        <input type="text" class="form-control" id="inputJob" placeholder="职位"  value="{{ request.session.job }}">
                       </div>
                   </div>
                    <div class="form-group mb">
                       <label for="inputQq" class="col-sm-2 control-label">QQ</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputQq" placeholder="QQ">
+                        <input type="text" class="form-control" id="inputQq" placeholder="QQ"  value="{{ request.session.qq }}">
                       </div>
                   </div>
                    <div class="form-group mb">
                       <label for="inputWeChat" class="col-sm-2 control-label">微信</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputWeChat" placeholder="微信">
+                        <input type="text" class="form-control" id="inputWeChat" placeholder="微信"  value="{{ request.session.wechat }}">
                       </div>
                   </div>
                    <div class="form-group mb">
                        <div class="col-sm-8 col-sm-offset-2">
-                           <a class="btn btn-primary btn-block save-handler">保存
+                           <a class="btn btn-primary btn-block save-handler" id="user-info-save">保存
                            </a>
                        </div>
                    </div>
@@ -110,4 +110,7 @@
            </div>
         </div>
     </div>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/user_info.js"></script>
 {% endblock %}

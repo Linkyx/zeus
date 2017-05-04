@@ -55,7 +55,7 @@ hr{
 }
 
 .all-project{
-    background-image: url('/static/images/cover-media.jpg');
+
     transition:All 0.2s ease-in-out;
 	-webkit-transition:All 0.2s ease-in-out;
 	-moz-transition:All 0.2s ease-in-out;
@@ -67,7 +67,7 @@ hr{
     background-color: #fff;
     margin-left: 50px;
     margin-right: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     border-radius: 5px;
 }
 .all-project:hover{
@@ -204,6 +204,10 @@ hr{
     color: #000;
 }
 
-
+.text-hidden{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 

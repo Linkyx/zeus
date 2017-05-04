@@ -29,7 +29,8 @@ urlpatterns = [
 urlpatterns += patterns('zeus.project_views',
                         # 项目接口
                         url(r'^create_project/$', 'create_project'),
-                        url(r'^get_all_project/$', 'get_all_project')
+                        url(r'^get_all_project/$', 'get_all_project'),
+                        url(r'get_project_task/(?P<pid>\d+)$', 'get_project_task')
                         )
 urlpatterns += patterns('zeus.authentication',
                         # 登陆校验,获取code进行并请求token
@@ -47,5 +48,7 @@ urlpatterns += patterns('zeus.task_views',
 urlpatterns += patterns('zeus.views',
                         # 项目首页公共内容
                         url(r'^$', 'index'),
-                        url(r'^user_info/$', 'user_info')
+                        url(r'^user_info/$', 'user_info'),
+                        url(r'^get_all_user/$', 'get_all_user'),
+                        url(r'^change_user_info/$', 'change_user_info')
                         )

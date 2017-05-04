@@ -1,7 +1,10 @@
 # -*- coding:utf-8 -*-
+import time
+from django.shortcuts import render
 
 from utils import logger, render_json
 from models import Project
+from decorators import user_has_project
 
 
 # 项目相关接口
@@ -11,12 +14,35 @@ def create_project(request):
     :param request:
     :return:
     """
-    name = 'test'
-    introduction = 'dasasd'
-    participant = 'dasdas'
+    name = request.POST.get('pro_name', '')
+    introduction = request.POST.get('pro_intro', '')
+    participant = request.POST.get('pro_part', '')
+    img = request.FILES.get('pro_img', '')
+    if not name:
+        return render_json({'result': False, 'message': u'项目名不能为空'})
 
+    if img:
+        import os
+        try:
+            # 根据时间戳存储图片
+            now = int(time.time())
+            ext = img.name.split('.')[-1]
+            img_first_name = '.'.join(img.name.split('.')[:-1])
+            img_name = img_first_name + str(now)
+            img_full_name = img_name + '.' + ext
+            img_path = os.path.join(os.path.dirname(__file__), 'static/images/', img_full_name)
+            with open(img_path, 'wb') as f:
+                for item in img.chunks():
+                    f.write(item)
+        except Exception as e:
+            logger.error(u'图片写入失败', e)
+            return render_json({'result': False, 'message': u'图片写入失败'})
+    else:
+        # 默认背景图
+        img_full_name = 'cover-internet.jpg'
     try:
-        project = Project.objects.create_project(request=request, name=name, introduction=introduction, participant=participant)
+        project = Project.objects.create_project(request=request, name=name, introduction=introduction,
+                                                 participant=participant, logo='/static/images/' + img_full_name)
     except Exception as e:
         logger.error(u"创建项目失败", e)
 
@@ -46,3 +72,13 @@ def get_all_project(request):
         })
 
     return render_json({'result': True, 'data': data})
+
+
+@user_has_project
+def get_project_task(request, pid):
+    """
+    获取项目下的任务
+    :param request:
+    :return:
+    """
+    return render(request, 'task_project.html', {})

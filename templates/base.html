@@ -55,13 +55,12 @@
 </div>
 <script>
     $('#logout').click(function(){
-        console.log("dasdasasdas")
         $('body').append(
             '<iframe src="https://sso.xiyoulinux.org/logout" style="display: none"></iframe>'
         )
         setTimeout(function(){
              window.location.href='/logout'
-        }, 1000)
+        }, 2000)
 
     })
 </script>

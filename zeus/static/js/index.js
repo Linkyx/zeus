@@ -3,10 +3,32 @@
  */
 $(function(){
     console.log("21312321312")
+
+    // 初始化用户表单
     $('#participant-project').select2({
-        tags: true
+        tags: true,
+        placeholder: "请选择用户",
     })
 
+    var select2_data = [];
+    $.ajax({
+        url: '/get_all_user/', //远程数据地址
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            select2_data = data['message'];
+            //初始化通知群组的下拉框
+            $('#participant-project').select2({
+                placeholder: '请选择选项',
+                allowClear: true,
+                tags: true,
+                cache: false,
+                data: select2_data  //数据
+            });
+        }
+    })
+
+    // 上传项目封面时实现预览效果
     $('#f').on('change', change);
 
     function change() {
@@ -50,4 +72,39 @@ $(function(){
          pic.src=this.result;
      }
  }
+
+// 创建项目
+    $('#create-project-btn').click(function(){
+        var pro_name = $('#inputProjectName').val(),
+            pro_intro = $('#inputProjectIntro').val(),
+            pro_part = $('#participant-project').val(),
+            file = document.getElementById("f");
+        console.log(file.files[0])
+        var data = new FormData();
+        data.append('pro_name',pro_name);
+        data.append('pro_intro', pro_intro);
+        data.append('pro_part', pro_part);
+        data.append('pro_img', file.files[0])
+        $.ajax({
+            url: '/create_project/',
+            type:'POST',
+            dataType:'json',
+            data: data,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function(res){
+                if (res.result){
+                    $('#myModal').modal('hide');
+                    layer.msg('项目创建成功', {icon: 6, time: 2000},function(){
+                        window.location.href='/'
+                    });
+                }else{
+                     layer.msg(res.message, {icon: 5});
+                }
+            }
+        })
+
+    })
 })
+
+
