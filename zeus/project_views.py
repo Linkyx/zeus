@@ -74,6 +74,42 @@ def get_all_project(request):
     return render_json({'result': True, 'data': data})
 
 
+def search_project(request):
+    """
+    搜索项目
+    :param request:
+    :return:
+    """
+    pro_name = request.GET.get('pro_name', '')
+    part_projects_res = Project.objects.get_user_part_project(request=request)
+    owner_projects_res = Project.objects.get_user_owner_project(request=request)
+
+    # 获取拥有的项目
+    owner_project = []
+    for project in owner_projects_res:
+        if pro_name in project.name or pro_name == '':
+            pid = project.pk
+            name = project.name
+            logo = project.logo
+            intro = project.introduction
+            owner_project.append({'pid': pid, 'name': name, 'logo': logo, 'intro': intro})
+
+    # 获取参与的项目
+    part_project = []
+    for project in part_projects_res:
+        if pro_name in project.name or pro_name == '':
+            pid = project.pk
+            name = project.name
+            logo = project.logo
+            intro = project.introduction
+            part_project.append({'pid': pid, 'name': name, 'logo': logo, 'intro': intro})
+
+    return render(request, 'index.html', {
+        'owner_project': owner_project,
+        'part_project': part_project
+    })
+
+
 @user_has_project
 def get_project_task(request, pid):
     """
@@ -82,3 +118,4 @@ def get_project_task(request, pid):
     :return:
     """
     return render(request, 'task_project.html', {})
+

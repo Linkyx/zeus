@@ -105,6 +105,25 @@ $(function(){
         })
 
     })
+
+    // 搜索项目
+    $('#search-project').click(function(){
+        var pro_name = $('#search-project-input').val()
+        window.location.href='/search_project/?pro_name=' + pro_name
+        // var data = new FormData();
+        // data.append('pro_name', pro_name)
+        // $.ajax({
+        //     url: '/search_project/',
+        //     type:'POST',
+        //     data: data,
+        //     processData: false,  // tell jQuery not to process the data
+        //     contentType: false,  // tell jQuery not to set contentType
+        //     success:function(res){
+        //         console.log(res)
+        //     }
+        // })
+
+    })
 })
 
 
