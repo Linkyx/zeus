@@ -38,6 +38,7 @@ urlpatterns += patterns('zeus.authentication',
                         # 登陆校验,获取code进行并请求token
                         url(r'^callback/$', 'callback'),
                         url(r'^logout/$', 'logout'),
+                        url(r'^login/$', 'login')
                         )
 urlpatterns += patterns('zeus.task_views',
                         # 任务接口
@@ -53,7 +54,8 @@ urlpatterns += patterns('zeus.message',
 
 urlpatterns += patterns('zeus.views',
                         # 项目首页公共内容
-                        url(r'^$', 'index'),
+                        url(r'^$', 'home'),
+                        url(r'^index/$', 'index'),
                         url(r'^user_info/$', 'user_info'),
                         url(r'^get_all_user/$', 'get_all_user'),
                         url(r'^change_user_info/$', 'change_user_info')

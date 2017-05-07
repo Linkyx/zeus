@@ -5,19 +5,90 @@
       <div class="col-sm-10 col-sm-offset-1 task-content">
           <div style=" border-bottom: 2px solid #E5E5E5;">
               <ul class="task-tab-project">
-                  <li><a class="border-bc" href="#finish" aria-controls="finish" role="tab" data-toggle="tab">已完成任务</a></li>
-                  <li><a href="#non-finish" aria-controls="non-finish" role="tab" data-toggle="tab">未完成任务</a></li>
+                  <li><a class="border-bc" href="#task" aria-controls="task" role="tab" data-toggle="tab">项目任务</a></li>
+                  <li><a href="#project-active" aria-controls="project-active" role="tab" data-toggle="tab">项目动态</a></li>
                   <li><a href="#project-file" aria-controls="project-file" role="tab" data-toggle="tab">项目文件</a></li>
-                  <li><a href="#project-gant" aria-controls="#roject-gant" role="tab" data-toggle="tab">甘特图</a></li>
+                  <li><a href="#project-gant" aria-controls="roject-gant" role="tab" data-toggle="tab">甘特图</a></li>
                   <li><a href="#setting-project" aria-controls="setting-project" role="tab" data-toggle="tab">项目设置</a></li>
               </ul>
           </div>
           <!-- Tab panes -->
           <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active " id="task-today">.1111..</div>
-            <div role="tabpanel" class="tab-pane" id="finish">.222..</div>
-            <div role="tabpanel" class="tab-pane" id="non-finish">.333..</div>
+            <div role="tabpanel" class="tab-pane active " id="task">
+                <div class="col-sm-4 col-sm-offset-4" style="text-align: center">已完成 、未完成</div>
+                <div class="every-task col-sm-10 col-sm-offset-1">
+                    <span class="fl mr50">测试任务</span>
+                    <span class="fl text-hidden task-intro"> dassad</span>
+                    <span class="fr ml10">
+                        <span class=" glyphicon glyphicon-remove"></span>
+                    </span>
+                    <span class="fr ml10">标记为已完成</span>
+                    <span class="mr50 fr">
+                    <span class="fr ml10">
+                        <img src="{{ request.session.avatar }}" class="img-task" alt="user">
+                    </span>
+                    <span class="fr ml10">截止时间</span>
+                    </span>
+                </div>
+                <div class="every-task col-sm-10 col-sm-offset-1">
+                    <span class="fl mr50">测试任务</span>
+                    <span class="fl text-hidden task-intro"> dassad</span>
+                    <span class="fr ml10">
+                        <span class=" glyphicon glyphicon-remove"></span>
+                    </span>
+                    <span class="fr ml10">标记为已完成</span>
+                    <span class="mr50 fr">
+                    <span class="fr ml10">
+                        <img src="{{ request.session.avatar }}" class="img-task" alt="user">
+                    </span>
+                    <span class="fr ml10">截止时间</span>
+                    </span>
+                </div>
+                <div class="every-task col-sm-10 col-sm-offset-1">
+                    <span class="fl mr50">测试任务</span>
+                    <span class="fl text-hidden task-intro"> dassad</span>
+                    <span class="fr ml10">
+                        <span class=" glyphicon glyphicon-remove"></span>
+                    </span>
+                    <span class="fr ml10">标记为已完成</span>
+                    <span class="mr50 fr">
+                    <span class="fr ml10">
+                        <img src="{{ request.session.avatar }}" class="img-task" alt="user">
+                    </span>
+                    <span class="fr ml10">截止时间</span>
+                    </span>
+                </div>
+                <div class="every-task col-sm-10 col-sm-offset-1">
+                    <span class="fl mr50">测试任务</span>
+                    <span class="fl text-hidden task-intro"> dassad</span>
+                    <span class="fr ml10">
+                        <span class=" glyphicon glyphicon-remove"></span>
+                    </span>
+                    <span class="fr ml10">标记为已完成</span>
+                    <span class="mr50 fr">
+                    <span class="fr ml10">
+                        <img src="{{ request.session.avatar }}" class="img-task" alt="user">
+                    </span>
+                    <span class="fr ml10">截止时间</span>
+                    </span>
+                </div>
+                <div class="every-task col-sm-10 col-sm-offset-1">
+                    <span class="fl mr50">测试任务</span>
+                    <span class="fl text-hidden task-intro"> dassad</span>
+                    <span class="fr ml10">
+                        <span class=" glyphicon glyphicon-remove"></span>
+                    </span>
+                    <span class="fr ml10">标记为已完成</span>
+                    <span class="mr50 fr">
+                    <span class="fr ml10">
+                        <img src="{{ request.session.avatar }}" class="img-task" alt="user">
+                    </span>
+                    <span class="fr ml10">截止时间</span>
+                    </span>
+                </div>
+            </div>
             <div role="tabpanel" class="tab-pane" id="project-file">.4444.</div>
+            <div role="tabpanel" class="tab-pane" id="project-active">.4444.</div>
             <div role="tabpanel" class="tab-pane" id="project-gant">.55555.</div>
             <div role="tabpanel" class="tab-pane" id="setting-project">.666666.</div>
           </div>

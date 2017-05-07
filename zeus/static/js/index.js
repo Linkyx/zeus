@@ -96,7 +96,7 @@ $(function(){
                 if (res.result){
                     $('#myModal').modal('hide');
                     layer.msg('项目创建成功', {icon: 6, time: 2000},function(){
-                        window.location.href='/'
+                        window.location.href='/index'
                     });
                 }else{
                      layer.msg(res.message, {icon: 5});
@@ -104,6 +104,13 @@ $(function(){
             }
         })
 
+    })
+    //修改排版
+    $('.typesetting li a').click(function(){
+        $('.typesetting li a').removeClass('type-click')
+        $(this).addClass('type-click')
+        $('.typesetting li a span').removeClass('type-click')
+        $(this).find('span').addClass('type-click')
     })
 
     // 搜索项目

@@ -5,7 +5,7 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
            <a class="navbar-brand" href="/">
-              <span  style="color: #3da8f5; font-weight: bold; margin-right: 20px;">Zeus</span>
+              <span  style="color: #F05F40; font-weight: bold; margin-right: 20px;">Zeus</span>
            </a>
             <a href="#" class="navbar-brand">
              <span>个人账户中心</span>
@@ -15,6 +15,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
+              <li><a href="/message_index" class="nav-a"><span class="glyphicon glyphicon-bell"></span></a></li>
+              <li><a href="/task_index" class="nav-a">我的任务</a></li>
+              <li><a href="/index" class="nav-a">我的项目</a></li>
               <li class="dropdown">
                   <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding-top:10px; padding-bottom: 10px;">
                   <span style="margin-right: 10px">{{ request.session.name }}</span>
@@ -56,7 +59,7 @@
                    <div class="form-group mb">
                        <label for="inputEmail3" class="col-sm-2 control-label">头像</label>
                        <img  src="{{ request.session.avatar }}" alt="user" style="width: 80px;border-radius: 50%;margin-left: 20px;">
-                        <a href="http://cn.gravatar.com/" class="btn btn-primary" style="margin-left: 100px;" target="_blank" >更改头像</a>
+                        <a href="http://cn.gravatar.com/" class="btn btn-primary" style="margin-left: 100px; background-color: #F05F40; border: none;" target="_blank" >更改头像</a>
                    </div>
                    <div class="form-group mb">
                         <label for="inputName" class="col-sm-2 control-label">昵称</label>
@@ -102,7 +105,7 @@
                   </div>
                    <div class="form-group mb">
                        <div class="col-sm-8 col-sm-offset-2">
-                           <a class="btn btn-primary btn-block save-handler" id="user-info-save">保存
+                           <a class="btn btn-primary btn-block save-handler" id="user-info-save" style="background-color: #F05F40;border: none">保存
                            </a>
                        </div>
                    </div>

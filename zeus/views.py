@@ -1,18 +1,40 @@
 # -*- coding:utf-8 -*-
 import json
 
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 import requests
 import re
 
-
+from decorators import process_request
 from models import Project
 from utils import render_json, get_users, refresh_user_session, logger
 
 
+def home(request):
+    """
+    首页
+    :param request:
+    :return:
+    """
+    # 已登录
+    status = 1
+    try:
+        user = request.session['id']
+
+    # session中无user信息
+    except KeyError:
+        # 未登录
+        status = -1
+    return render(request, 'home.html', {
+        'status': status
+    })
+
+
+@process_request
 def index(request):
     """
-    首页，显示项目信息
+    项目首页，显示项目信息
     :param request:
     :return:
     """
@@ -43,6 +65,7 @@ def index(request):
     })
 
 
+@process_request
 def user_info(request):
     """
     用户信息页面
@@ -53,6 +76,7 @@ def user_info(request):
     })
 
 
+@process_request
 def get_all_user(request):
     """
     获取所有用户
@@ -67,6 +91,7 @@ def get_all_user(request):
     return render_json({'result': True, 'message': user_list})
 
 
+@process_request
 def change_user_info(request):
     """
     修改用户信息
