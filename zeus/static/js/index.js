@@ -3,7 +3,6 @@
  */
 $(function(){
     console.log("21312321312")
-
     // 初始化用户表单
     $('#participant-project').select2({
         tags: true,
@@ -113,13 +112,57 @@ $(function(){
         $(this).addClass('type-click')
         $('.typesetting li a span').removeClass('type-click')
         $(this).find('span').addClass('type-click')
+        var typesetting = $(this).attr('id')
+        setCookie('typesetting',typesetting,365)
+        console.log("dsasdaas")
     })
 
-    // 搜索项目
-    $('#search-project').click(function(){
-        var pro_name = $('#search-project-input').val()
-        window.location.href='/search_project/?pro_name=' + pro_name
-    })
+    //设置排版cookie
+    function getCookie(c_name)
+    {
+        if (document.cookie.length>0)
+          {
+          c_start=document.cookie.indexOf(c_name + "=")
+          if (c_start!=-1)
+            {
+            c_start=c_start + c_name.length+1
+            c_end=document.cookie.indexOf(";",c_start)
+            if (c_end==-1) c_end=document.cookie.length
+            return unescape(document.cookie.substring(c_start,c_end))
+            }
+          }
+        return ""
+    }
+
+    function setCookie(c_name,value,expiredays)
+    {
+        var exdate=new Date()
+        exdate.setDate(exdate.getDate()+expiredays)
+        document.cookie=c_name+ "=" +escape(value)+
+        ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+    }
+
+    function checkCookie()
+    {
+        typesetting=getCookie('typesetting')
+        if (typesetting!=null && typesetting!="")
+          {
+              if(typesetting == 'one'){
+                  $('#one').click()
+              }else{
+                  $('#two').click()
+              }
+          }
+        else
+          {
+          typesetting=1
+          if (typesetting!=null && typesetting!="")
+            {
+            setCookie('typesetting',typesetting,365)
+            }
+          }
+    }
+    checkCookie();
 })
 
 

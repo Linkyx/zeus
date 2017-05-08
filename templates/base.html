@@ -62,7 +62,11 @@
         setTimeout(function(){
              window.location.href='/logout'
         }, 2000)
-
+    })
+     // 搜索项目
+    $('#search-project').click(function(){
+        var pro_name = $('#search-project-input').val()
+        window.location.href='/search_project/?pro_name=' + pro_name
     })
 </script>
 {% block js %}

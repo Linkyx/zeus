@@ -50,7 +50,6 @@ def index(request):
         name = project.name
         logo = project.logo
         intro = project.introduction
-
         avatar = request.session['avatar']
         owner_project.append({
             'pid': pid, 'name': name,

@@ -44,19 +44,20 @@ hr{
     font-weight: 700;
 }
 .every-project{
-    transition:All 0.2s ease-in-out;
-	-webkit-transition:All 0.2s ease-in-out;
-	-moz-transition:All 0.2s ease-in-out;
-	-o-transition:All 0.2s ease-in-out;
+
     border-left: 5px solid #f05f40;
     height:70px;
     margin-bottom: 30px;
     line-height: 70px;
     background-color: #FFF;
-    border-bottom: 1px solid #666;
-    -webkit-box-shadow: 3px 3px 3px #666;
-    -moz-box-shadow: 3px 3px 3px #666;
-    box-shadow: 3px 3px 3px #666;
+    transition:All 0.2s ease-in-out;
+	-webkit-transition:All 0.2s ease-in-out;
+	-moz-transition:All 0.2s ease-in-out;
+	-o-transition:All 0.2s ease-in-out;
+    border-bottom: 1px solid #A6A6A6;
+    -webkit-box-shadow: 3px 3px 3px #A6A6A6;
+    -moz-box-shadow: 3px 3px 3px #A6A6A6;
+    box-shadow: 3px 3px 3px #A6A6A6;
 }
 .every-project:hover{
     transform:translate(0,-7px);
@@ -84,7 +85,7 @@ hr{
 	-moz-transform:translate(0,-7px);
 	-o-transform:translate(0,-7px);
 	-ms-transform:translate(0,-7px);
-    color: #337ab7;
+    color: #F05F40;
     text-decoration: none;
 }
 
@@ -235,6 +236,9 @@ hr{
 .mr50{
     margin-right:50px;
 }
+.mr20{
+    margin-right: 20px;
+}
 .message-tab{
     height: 40px;
     min-width: 300px;
@@ -278,7 +282,6 @@ hr{
     color: #000;
 }
 .task-content{
-    background-color: #FFF;
     padding: 0 0 100px 0;
 }
 .border-bc{
@@ -291,20 +294,81 @@ hr{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.every-task{
+.every-task {
     margin-top: 20px;
     border-left: 5px solid #666;
-    height:50px;
+    height: 50px;
     line-height: 50px;
+    border-top: 1px solid #ececec;
+    transition: All 0.2s ease-in-out;
+    -webkit-transition: All 0.2s ease-in-out;
+    -moz-transition: All 0.2s ease-in-out;
+    -o-transition: All 0.2s ease-in-out;
+    border-bottom: 1px solid #A6A6A6;
+    -webkit-box-shadow: 3px 3px 3px #A6A6A6;
+    -moz-box-shadow: 3px 3px 3px #A6A6A6;
+    box-shadow: 3px 3px 3px #A6A6A6;
+}
+.every-task:hover{
+     transform:translate(0,-7px);
+	-webkit-transform:translate(0,-7px);
+	-moz-transform:translate(0,-7px);
+	-o-transform:translate(0,-7px);
+	-ms-transform:translate(0,-7px);
 }
 .img-task{
     width: 30px;
     border-radius: 50%;
 }
 .task-intro{
-    width:200px;
+    width:100px;
     color: #8c8c8c;
 }
 .project-owner{
     color: #8c8c8c;
+}
+.every-task a{
+    color: #000;
+}
+.every-task a:hover{
+    color: #F05F40;
+}
+.no-finish-task, .finish-task{
+    background-color: #FFF;
+    margin-top: 50px;
+    padding-bottom: 70px;
+}
+.remove-task{
+    font-size: 10px;
+    color: #8c8c8c;
+}
+.remove-task:hover{
+     color: #F05F40;
+}
+.mh{
+    min-height: 500px;
+    height:500px;
+    overflow-y: auto;
+}
+.task-status{
+    text-align: center;
+    height:50px;
+    line-height: 50px;
+    font-size: 18px;
+}
+.finish-time{
+    color: #FFF;
+    background-color: #F05F40;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+.finish-time-1{
+    color: #FFF;
+    background-color: #666;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 15px;
+    border-radius: 10px;
 }

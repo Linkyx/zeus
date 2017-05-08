@@ -4,8 +4,8 @@
     <div class="row" style="margin-top: 20px">
         <div class="col-sm-2 col-sm-offset-10 typesetting">
         <ul>
-            <li><a href="#normal" class="type-click" aria-controls="task" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-large type-click"></span></a></li>
-            <li><a href="#other" aria-controls="task" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-align-justify"></span></a></li>
+            <li><a href="#normal" id="one" class="type-click" aria-controls="task" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-large type-click"></span></a></li>
+            <li><a href="#other" id="two" aria-controls="task" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-align-justify"></span></a></li>
         </ul>
         </div>
 
@@ -50,32 +50,32 @@
         </div>
         <div class="tab-pane"   role="tabpanel" id="other">
         <div class="row ">
-        <div class="col-sm-2 my-project">我拥有的项目</div><hr>
-        <div class="every-project col-sm-5 bgw ml50">
-            <a href="###" class="other-project-a" data-toggle="modal" data-target="#myModal">
-                <span class="glyphicon glyphicon-plus-sign" style="font-size: 30px; line-height: 70px;">
-                </span>
-                <span style="position: absolute; left: 100px;">创建项目</span>
-            </a>
-
-        </div>
-
-        {% for project in owner_project %}
+            <div class="col-sm-2 my-project">我拥有的项目</div><hr>
             <div class="every-project col-sm-5 bgw ml50">
-            <a href="/get_project_task/{{ project.pid }}" class="other-project-a">
-                <span class="fl mr50">{{ project.name }}</span>
-                <span class="fl text-hidden task-intro"> {{ project.intro }}</span>
-                <span class="fr project-owner">
-                    {{ project.owner }}
-                </span>
-                <span class="mr50 fr">
-                <span class="fr ml10">
-                    <img src="{{ project.avatar }}" class="img-task" alt="user">
-                </span>
-                </span>
-            </a>
+                <a href="###" class="other-project-a" data-toggle="modal" data-target="#myModal">
+                    <span class="glyphicon glyphicon-plus-sign" style="font-size: 30px; line-height: 70px;">
+                    </span>
+                    <span style="position: absolute; left: 100px;">创建项目</span>
+                </a>
+
             </div>
-        {% endfor %}
+
+            {% for project in owner_project %}
+                <div class="every-project col-sm-5 bgw ml50">
+                <a href="/get_project_task/{{ project.pid }}" class="other-project-a">
+                    <span class="fl mr50 text-hidden" style="width: 80px;">{{ project.name }}</span>
+                    <span class="fl text-hidden task-intro"> {{ project.intro }}</span>
+                    <span class="fr project-owner">
+                        {{ project.owner }}
+                    </span>
+                    <span class="mr50 fr">
+                    <span class="fr ml10">
+                        <img src="{{ project.avatar }}" class="img-task" alt="user">
+                    </span>
+                    </span>
+                </a>
+                </div>
+            {% endfor %}
         </div>
         <div class="row" style="margin-top: 50px; margin-bottom: 200px">
         <div class="col-sm-2 my-project">我参与的项目</div><hr>

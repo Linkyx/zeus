@@ -36,7 +36,7 @@ class ProjectManager(models.Manager):
         uid = request.session['id']
 
         # 获取用户拥有的项目
-        projects = self.filter(owner=uid)
+        projects = self.filter(owner=uid).order_by("-create_time")
 
         return projects
 
@@ -48,7 +48,7 @@ class ProjectManager(models.Manager):
         uid = str(request.session['id'])
 
         # 获取用户拥有的项目
-        projects = self.all()
+        projects = self.all().order_by("-create_time")
         participant_projects = []
         for project in projects:
             uids = project.participant.split(',')
