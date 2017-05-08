@@ -9,8 +9,10 @@ from django.shortcuts import render
 from utils import logger, render_json, get_users
 from models import Task
 from constant import LEVEL, STATUS_CHOICES
+from zeus.decorators import process_request
 
 
+@process_request
 def task_index(request):
     """
     任务首页
@@ -20,6 +22,7 @@ def task_index(request):
     return render(request, 'task_user.html', {})
 
 
+@process_request
 def create_task(request):
     """
     创建任务
@@ -42,6 +45,7 @@ def create_task(request):
     return render_json({'result': True, 'message': u"创建任务成功"})
 
 
+@process_request
 def get_all_task(request):
     """
     获取所有任务
@@ -78,6 +82,7 @@ def get_all_task(request):
     return render_json({'result': True, 'data': data})
 
 
+@process_request
 def update_task_user(request):
     """
     更新任务用户

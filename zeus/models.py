@@ -30,7 +30,7 @@ class ProjectManager(models.Manager):
 
     def get_user_owner_project(self, request):
         """
-        获取当前用户拥有
+        获取当前用户拥有的项目
         :return:
         """
         uid = request.session['id']
@@ -65,7 +65,7 @@ class ProjectManager(models.Manager):
 
         for project in projects:
             if str(request.session['id']) in project.owner.split(',') or \
-                            request.session['id'] in project.participant.split(','):
+                            str(request.session['id']) in project.participant.split(','):
                 return True
             else:
                 return False
@@ -81,6 +81,7 @@ class Project(models.Model):
     participant = models.CharField(u'项目参与者', max_length=32, blank=True, null=True)
     is_active = models.BooleanField(u'是否未删除', default=True)
     logo = models.CharField(u'项目logo', blank=True, null=True, max_length=128)
+    create_time = models.DateTimeField(u'创建时间', auto_now=True)
     objects = ProjectManager()
 
     class Meta:

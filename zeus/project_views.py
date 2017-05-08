@@ -4,9 +4,10 @@ from django.shortcuts import render
 
 from utils import logger, render_json
 from models import Project
-from decorators import user_has_project
+from decorators import user_has_project, process_request
 
 
+@process_request
 # 项目相关接口
 def create_project(request):
     """
@@ -49,6 +50,7 @@ def create_project(request):
     return render_json({'result': True, 'message': u"创建项目成功"})
 
 
+@process_request
 def get_all_project(request):
     """
     获取所有项目
@@ -74,6 +76,7 @@ def get_all_project(request):
     return render_json({'result': True, 'data': data})
 
 
+@process_request
 def search_project(request):
     """
     搜索项目
@@ -110,6 +113,7 @@ def search_project(request):
     })
 
 
+@process_request
 @user_has_project
 def get_project_task(request, pid):
     """
