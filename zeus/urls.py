@@ -31,7 +31,6 @@ urlpatterns += patterns('zeus.project_views',
                         # 项目接口
                         url(r'^create_project/$', 'create_project'),
                         url(r'^get_all_project/$', 'get_all_project'),
-                        url(r'^get_project_task/(?P<pid>\d+)$', 'get_project_task'),
                         url(r'^search_project/$', 'search_project')
                         )
 urlpatterns += patterns('zeus.authentication',
@@ -44,8 +43,10 @@ urlpatterns += patterns('zeus.task_views',
                         # 任务接口
                         url(r'^task_index', 'task_index'),
                         url(r'^create_task/$', 'create_task'),
+                        url(r'^delete_task/$', 'delete_task'),
                         url(r'^get_all_task/$', 'get_all_task'),
-                        url(r'^update_task_user/$', 'update_task_user')
+                        url(r'^update_task_user/$', 'update_task_user'),
+                        url(r'^get_project_task/(?P<pid>\d+)$', 'get_project_task'),
                         )
 urlpatterns += patterns('zeus.message',
                         # 消息接口

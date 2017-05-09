@@ -38,9 +38,30 @@ def render_json(dictionary={}):
     return HttpResponse(json.dumps(dictionary), content_type='application/json')
 
 
-def get_users(request):
+def get_all_users(request):
     """
     获取所有用户
+    :param request:
+    :return:
+    """
+    # 缓存所有用户信息， id name 头像
+    try:
+        header = {'Authorization': 'Bearer ' + request.session['token']}
+        req = urllib2.Request(url='https://api.xiyoulinux.org/users?per_page=1000', headers=header)
+        data = urllib2.urlopen(req)
+        user_msg = json.loads(data.read())
+    except Exception, e:
+        return HttpResponseRedirect(request.session['old_url'])
+    users = {}
+    for item in user_msg['data']:
+        user = {'name': item['name'], 'avatar': item['avatar_url']}
+        users.update({item['id']: user})
+    return users
+
+
+def get_users(request):
+    """
+    获取除当前用户外所有用户
     :param request:
     :return:
     """

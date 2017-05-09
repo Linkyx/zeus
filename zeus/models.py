@@ -106,7 +106,7 @@ class TaskManager(models.Manager):
         """
         owner = request.session['id']
 
-        task = self.create(name=name, introduction=introduction, participant=participant, finish_time=finish_time,
+        task = self.create(name=name, owner=owner, introduction=introduction, participant=participant, finish_time=finish_time,
                            level=level, project_id=project_id)
 
         return task
@@ -129,6 +129,34 @@ class TaskManager(models.Manager):
         info = task.update(participant=participant)
 
         return info
+
+    def get_task_pid_unfinish(self, pid):
+        """
+        根据项目id获取项目下待完成任务
+        :return:
+        """
+        tasks = self.filter(project_id=pid, status=0).order_by('-level')
+
+        return tasks
+
+    def get_task_pid_finish(self, pid):
+        """
+        根据项目id获取项目下已完成任务
+        :return:
+        """
+        tasks = self.filter(project_id=pid, status=2).order_by('-level')
+
+        return tasks
+
+    def delete_task(self, tid):
+        """
+        删除任务
+        :param tid:
+        :return:
+        """
+        task = self.filter(pk=tid).update(is_active=False)
+
+        return task
 
 
 class Task(models.Model):

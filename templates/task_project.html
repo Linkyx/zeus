@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class="row">
-      <div class="col-sm-10 col-sm-offset-1 task-content">
+      <div class="col-sm-10 col-sm-offset-1 task-content" pid="{{ pid }}">
           <div style=" border-bottom: 2px solid #E5E5E5;background-color: #FFF">
               <ul class="task-tab-project">
                   <li><a class="border-bc" href="#task" aria-controls="task" role="tab" data-toggle="tab">项目任务</a></li>
@@ -12,97 +12,135 @@
                   <li><a href="#setting-project" aria-controls="setting-project" role="tab" data-toggle="tab">项目设置</a></li>
               </ul>
           </div>
+          <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document" style="width: 600px; min-width: 600px">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新建任务</h4>
+              </div>
+              <div class="modal-body">
+                  <form>
+                      <div>
+                          <div style="margin: 0 auto; width: 100px; text-align: center">
+                         <span class="glyphicon glyphicon-menu-hamburger" style="font-size: 70px"> </span>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="inputTaskName">任务名</label>
+                        <input type="text" class="form-control" id="inputTaskName" placeholder="任务名">
+                      </div>
+                      <div class="form-group">
+                        <label for="inputTaskIntro">任务内容</label>
+                        <textarea  class="form-control" id="inputTaskIntro"></textarea>
+                      </div>
+                      <div class="form-group">
+                          <label for="participant-task">任务参与者</label>
+                          <select  class="form-control" style="width: 100%;" multiple="multiple"  id="participant-task">
+                          </select>
+                      </div>
+                      </form>
+                      <form class="form-inline">
+                          <div class="form-group">
+                              <label for="participant-finishtime">截止日期</label>
+                               <input type="text" id="participant-finishtime" class="form-control">
+                          </div>
+                          <div class="form-group" style="float: right;">
+                            <label for="task-level">任务级别</label>
+                            <select type="text" class="form-control" id="task-level" style="width:196px"   >
+                                <option value="1">低</option>
+                                <option value="2">中</option>
+                                <option value="3">高</option>
+                            </select>
+                          </div>
+                      </form>
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-task">取消</button>
+                <button type="button" class="btn btn-primary" id="create-task-btn">创建</button>
+              </div>
+            </div>
+          </div>
+        </div>
           <!-- Tab panes -->
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active " id="task">
                 <div class="col-sm-5 no-finish-task">
                     <p  class="task-status">待完成</p>
                     <div class="mh">
-                        <div class="every-task col-sm-12">
-                            <a href="###" class="other-project-a">
+                        <div class="every-task col-sm-12" style="border-left: 5px solid #F05F40">
+                            <a href="###" class="other-project-a"  data-toggle="modal" data-target="#myModal">
                                 <span class="glyphicon glyphicon-plus-sign" style="font-size: 30px; line-height: 50px; color: #F05F40;">
                                 </span>
                                 <span style="position: absolute; left: 100px; color: #F05F40;">增加任务</span>
                             </a>
                         </div>
-                        <div class="every-task col-sm-12">
-                            <a href="###">
-                            <span class="fl mr20 text-hidden" style="width:80px;">测试任务</span>
+                        {% for task in unfinish_task %}
+                            {% if  task.level == '1' %}
+                                <div class="every-task col-sm-12" style="border-left: 5px solid #666">
+                            {% elif task.level == '2' %}
+                                <div class="every-task col-sm-12" style="border-left: 5px solid #efa231">
+                            {% elif task.level == '3' %}
+                                <div class="every-task col-sm-12" style="border-left: 5px solid #F05F40">
+                            {% endif %}
+                            <a href="###" tid="{{ task.tid }}">
+                            <span class="fl mr20 text-hidden" style="width:80px;">{{ task.name }}</span>
                             </a>
-                            <a href="###">
+                            <a href="###" tid="{{ task.tid }}" class="delete_task">
                             <span class="fr ml10">
                                 <span class=" glyphicon glyphicon-remove remove-task"></span>
                             </span>
                             </a>
-                            <span class="fr ml10">紧急</span>
+                            {% if  task.level == '1' %}
+                                <span class="fr ml10" style="color: #666;">级别：低</span>
+                            {% elif task.level == '2' %}
+                                <span class="fr ml10" style="color: #efa231;">级别：中</span>
+                            {% elif task.level == '3' %}
+                                  <span class="fr ml10" style="color: #f05f40;">级别：高</span>
+                            {% endif %}
                             <span class=" fr">
                             <span class="fr ml10">
-                                <img src="{{ request.session.avatar }}" class="img-task" alt="user">
+                                <img src="{{ task.avatar }}" class="img-task" alt="user">
                             </span>
-                            <span class="fr ml10 finish-time">截止时间</span>
+                            <span class="fr ml10 finish-time">{{ task.finish_time }}</span>
                             </span>
 
                         </div>
-                        <div class="every-task col-sm-12">
-                            <a href="###">
-                            <span class="fl mr20 text-hidden" style="width:80px;">测试任务</span>
-                            </a>
-                            <a href="###">
-                            <span class="fr ml10">
-                                <span class=" glyphicon glyphicon-remove remove-task"></span>
-                            </span>
-                            </a>
-                            <span class="fr ml10">紧急</span>
-                            <span class=" fr">
-                            <span class="fr ml10">
-                                <img src="{{ request.session.avatar }}" class="img-task" alt="user">
-                            </span>
-                            <span class="fr ml10 finish-time">截止时间</span>
-                            </span>
-
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="col-sm-5 col-sm-offset-2 finish-task">
                     <p class="task-status">已完成</p>
                     <div class="mh">
+                        {% for task in finish_task %}
                         <div class="every-task col-sm-12">
-                            <a href="###">
-                            <span class="fl mr20 text-hidden" style="width:80px;"><s>测试任务</s></span>
+                            <a href="###" tid="{{ task.tid }}">
+                            <span class="fl mr20 text-hidden" style="width:80px;"><s>{{ task.name }}</s></span>
                             </a>
-                            <a href="###">
+                            <a href="###" tid="{{ task.tid }}" class="delete_task">
                             <span class="fr ml10">
                                 <span class=" glyphicon glyphicon-remove remove-task"></span>
                             </span>
                             </a>
-                            <span class="fr ml10">紧急</span>
+                            {% if  task.level == '1' %}
+                                <span class="fr ml10" style="color: #666;">级别：低</span>
+                            {% elif task.level == '2' %}
+                                <span class="fr ml10" style="color: #666;">级别：中</span>
+                            {% elif task.level == '3' %}
+                                  <span class="fr ml10" style="color: #666;">级别：高</span>
+                            {% endif %}
                             <span class=" fr">
                             <span class="fr ml10">
-                                <img src="{{ request.session.avatar }}" class="img-task" alt="user">
+                                <img src="{{ task.avatar }}" class="img-task" alt="user">
                             </span>
-                            <span class="fr ml10 finish-time-1">截止时间</span>
+                            <span class="fr ml10 finish-time-1">{{ task.finish_time }}</span>
                             </span>
 
                         </div>
-                        <div class="every-task col-sm-12">
-                            <a href="###">
-                            <span class="fl mr20 text-hidden" style="width:80px;"><s>测试任务</s></span>
-                            </a>
-                            <a href="###">
-                            <span class="fr ml10">
-                                <span class=" glyphicon glyphicon-remove remove-task"></span>
-                            </span>
-                            </a>
-                            <span class="fr ml10">紧急</span>
-                            <span class=" fr">
-                            <span class="fr ml10">
-                                <img src="{{ request.session.avatar }}" class="img-task" alt="user">
-                            </span>
-                            <span class="fr ml10  finish-time-1">截止时间</span>
-                            </span>
-
-                        </div>
-
+                        {% endfor %}
                     </div>
                 </div>
             </div>

@@ -131,13 +131,3 @@ def search_project(request):
     })
 
 
-@process_request
-@user_has_project
-def get_project_task(request, pid):
-    """
-    获取项目下的任务
-    :param request:
-    :return:
-    """
-    return render(request, 'task_project.html', {})
-
