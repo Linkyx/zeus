@@ -14,7 +14,7 @@
           </div>
           <!-- Modal -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document" style="width: 600px; min-width: 600px">
+          <div class="modal-dialog" role="document" style="width: 400px; min-width: 400px">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -40,23 +40,23 @@
                           <select  class="form-control" style="width: 100%;" multiple="multiple"  id="participant-task">
                           </select>
                       </div>
-                      </form>
-                      <form class="form-inline">
-                          <div class="form-group">
-                              <label for="participant-finishtime">截止日期</label>
-                               <input type="text" id="participant-finishtime" class="form-control">
-                          </div>
-                          <div class="form-group" style="float: right;">
-                            <label for="task-level">任务级别</label>
-                            <select type="text" class="form-control" id="task-level" style="width:196px"   >
-                                <option value="1">低</option>
-                                <option value="2">中</option>
-                                <option value="3">高</option>
-                            </select>
-                          </div>
-                      </form>
-
-
+                      <div class="form-group">
+                          <label for="participant-createtime">开始日期</label>
+                           <input type="text" id="participant-createtime" class="form-control">
+                      </div>
+                      <div class="form-group">
+                          <label for="participant-finishtime">截止日期</label>
+                           <input type="text" id="participant-finishtime" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="task-level">任务级别</label>
+                        <select type="text" class="form-control" id="task-level" style="width:100%"   >
+                            <option value="1">低</option>
+                            <option value="2">中</option>
+                            <option value="3">高</option>
+                        </select>
+                      </div>
+                  </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-task">取消</button>
@@ -144,8 +144,25 @@
                     </div>
                 </div>
             </div>
+            <div role="tabpanel" class="tab-pane" id="project-active">
+                <div class="project-dynamic col-sm-12" id="project-dynamic">
+                    {% for dynamic in dynamic_list %}
+                    <div class="col-sm-8 col-sm-offset-2 every-active">
+                        <img src="{{ dynamic.avatar }}" alt="user" class="user-active">
+                        <p class="triangle-right"></p>
+                        <section class="active-wrap col-sm-10">
+                            <header class="active-header">
+                                <span class="active-title">{{ dynamic.title }}</span>
+                                <span class="glyphicon glyphicon-time active-time">{{ dynamic.create_time }}</span>
+                            </header>
+                            <div class="active-content">{{ dynamic.content }}</div>
+                        </section>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
             <div role="tabpanel" class="tab-pane" id="project-file">.4444.</div>
-            <div role="tabpanel" class="tab-pane" id="project-active">.4444.</div>
             <div role="tabpanel" class="tab-pane" id="project-gant">.55555.</div>
             <div role="tabpanel" class="tab-pane" id="setting-project">.666666.</div>
           </div>

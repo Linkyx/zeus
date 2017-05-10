@@ -99,15 +99,15 @@ class TaskManager(models.Manager):
     def get_queryset(self):
         return super(TaskManager, self).get_queryset().filter(is_active=True)
 
-    def create_task(self, request, name, introduction, participant, finish_time, level, project_id):
+    def create_task(self, request, name, introduction, participant, finish_time, begin_time, level, project_id):
         """
         创建任务
         :return:
         """
         owner = request.session['id']
 
-        task = self.create(name=name, owner=owner, introduction=introduction, participant=participant, finish_time=finish_time,
-                           level=level, project_id=project_id)
+        task = self.create(name=name, owner=owner, introduction=introduction, participant=participant, begin_time=begin_time,
+                           finish_time=finish_time, level=level, project_id=project_id)
 
         return task
 
@@ -179,6 +179,7 @@ class Task(models.Model):
     owner = models.CharField(u'任务拥有者', max_length=32, blank=True, null=True)
     participant = models.CharField(u'任务参与者', max_length=32, blank=True, null=True)
     create_time = models.DateTimeField(u'创建时间', auto_now=True)
+    begin_time = models.DateTimeField(u'开始时间',  blank=True, null=True)
     finish_time = models.DateTimeField(u'完成时间',  blank=True, null=True)
     status = models.CharField(u'当前状态', choices=STATUS_CHOICES, default=0, max_length=16)
     level = models.CharField(u'任务级别', choices=LEVEL_CHOICES, default=0, max_length=16)
@@ -212,17 +213,58 @@ class Message(models.Model):
     content = models.CharField(u'消息内容', max_length=255, blank=True, null=True)
     create_time = models.DateTimeField(u'创建时间', auto_now=True)
     update_time = models.DateTimeField(u'更新时间', auto_now=True)
+    sender = models.CharField(u'发送者', max_length=255, blank=True, null=True)
     receiver = models.CharField(u'接收者', max_length=255, blank=True, null=True)
     is_active = models.BooleanField(u'是否未删除', default=True)
 
     objects = MessageManager()
 
     class Meta:
-        verbose_name = u'消息信息'
-        verbose_name_plural = u'消息信息'
+        verbose_name = u'消息'
+        verbose_name_plural = u'消息'
 
     def __unicode__(self):
         return self.title
 
 
+class ProjectDynamicManager(models.Manager):
+    """
+    项目动态方发表
+    """
+    def create_dynamic(self, request, pid, content, title):
+        """
+        创建动态
+        :return:
+        """
+        sender_id = request.session['id']
+        dynamic = self.create(sender_id=sender_id, project_id=pid, content=content, title=title)
 
+        return dynamic
+
+    def get_all_dynamic(self):
+        """
+        获取动态
+        :return:
+        """
+        return self.all()
+
+
+class ProjectDynamic(models.Model):
+    """
+    项目动态
+    """
+    sender_id = models.CharField(u"动态创建者", max_length=32, blank=True, null=True)
+    project_id = models.CharField(u"项目id", max_length=32, blank=True, null=True)
+    content = models.CharField(u"内容", max_length=256, blank=True, null=True)
+    title = models.CharField(u"标题", max_length=256, blank=True, null=True)
+    create_time = models.DateTimeField(u'创建时间', auto_now=True)
+    update_time = models.DateTimeField(u'更新时间', auto_now=True)
+
+    objects = ProjectDynamicManager()
+
+    class Meta:
+        verbose_name = u'项目动态'
+        verbose_name_plural = u'项目动态'
+
+    def __unicode__(self):
+        return self.title

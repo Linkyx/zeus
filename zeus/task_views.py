@@ -10,6 +10,7 @@ from utils import logger, render_json, get_users, get_all_users
 from models import Task
 from constant import LEVEL, STATUS_CHOICES
 from zeus.decorators import process_request, user_has_project
+from zeus.project_dynamic import create_dynamic, get_project_dynamic
 
 
 @process_request
@@ -74,10 +75,26 @@ def get_project_task(request, pid):
             'level': level,
             'tid': tid
         })
+
+    # 获取项目动态
+    dynamic_list = []
+    dynamics = get_project_dynamic(request=request, pid=pid)
+    for dynamic in dynamics:
+        owner = dynamic.sender_id
+        user = users[int(owner)]
+        avatar = user['avatar']
+        dynamic_list.append({
+            'content': dynamic.content,
+            'title': dynamic.title,
+            'create_time': dynamic.create_time.strftime('%Y-%m-%d'),
+            'avatar': avatar
+        })
+
     return render(request, 'task_project.html', {
         'pid': pid,
         'finish_task': finish_task,
-        'unfinish_task': unfinish_task
+        'unfinish_task': unfinish_task,
+        'dynamic_list': dynamic_list
     })
 
 
@@ -92,6 +109,7 @@ def create_task(request):
     introduction = request.POST.get('intro', '')
     participant = request.POST.get('part', '')
     finish_time = request.POST.get('finish_time', '')
+    begin_time = request.POST.get('begin_time', '')
     level = request.POST.get('level', '')
     project_id = request.POST.get('pid', '')
 
@@ -99,15 +117,22 @@ def create_task(request):
         return render_json({'result': False, 'message': u'任务名不能为空'})
     if not finish_time:
         finish_time = datetime.datetime.now()
+    if not begin_time:
+        begin_time = datetime.datetime.now()
 
     finish_time_temp = datetime.datetime.strptime(finish_time, "%Y-%m-%d").date()
 
     try:
         task = Task.objects.create_task(request=request, name=name, introduction=introduction, participant=participant,
-                                        finish_time=finish_time_temp, level=level, project_id=project_id)
+                                        begin_time=begin_time, finish_time=finish_time_temp, level=level, project_id=project_id)
     except Exception as e:
         logger.error(u'创建任务失败', e)
         return render_json({'result': False, 'messgae': u'创建任务失败'})
+
+    # 生成项目动态
+    content = request.session['name'] + u"创建了一条任务——" + name
+    title = u"任务创建"
+    create_dynamic(request=request, pid=project_id, content=content, title=title)
 
     return render_json({'result': True, 'message': u"创建任务成功"})
 
@@ -120,11 +145,19 @@ def delete_task(request):
     :return:
     """
     tid = request.POST.get('tid', '')
+
     try:
-        task = Task.objects.delete_task(tid=tid)
+        task = Task.objects.get(pk=tid)
+        count = Task.objects.delete_task(tid=tid)
     except Exception as e:
         logger.error(u"删除任务失败", e)
         return render_json({'result': False, 'message': u"删除任务失败"})
+
+    # 生成项目动态
+    content = request.session['name'] + u"删除了一条任务——" + task.name
+    title = u"删除任务"
+    create_dynamic(request=request, pid=task.project_id, content=content, title=title)
+
     return render_json({'result': True, 'message': u"删除任务成功"})
 
 

@@ -9,9 +9,11 @@ $(function(){
     })
 
     var select2_data = [];
+    var pid = $('.task-content').attr('pid');
     $.ajax({
-        url: '/get_all_user/', //远程数据地址
+        url: '/get_project_user/', //远程数据地址
         type: 'GET',
+        data: {'pid': pid},
         dataType: 'json',
         success: function (data) {
             select2_data = data['message'];
@@ -32,12 +34,17 @@ $(function(){
         minView: 2,
         pickerPosition: "top-right"
     });
-
+    $('#participant-createtime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: 2,
+        pickerPosition: "top-right"
+    });
     //创建任务
     $('#create-task-btn').click(function(){
         var name = $('#inputTaskName').val(),
             intro = $('#inputTaskIntro').val(),
             part = $('#participant-task').val(),
+            begin_time = $('#participant-createtime').val(),
             finish_time = $('#participant-finishtime').val(),
             level = $('#task-level').val();
         var pid = $('.task-content').attr('pid');
@@ -48,6 +55,7 @@ $(function(){
         data.append('name', name);
         data.append('intro', intro);
         data.append('part', part);
+        data.append('begin_time', begin_time);
         data.append('finish_time', finish_time);
         data.append('level', level);
         data.append('pid', pid);

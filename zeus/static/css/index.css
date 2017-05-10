@@ -371,3 +371,56 @@ hr{
     margin-top: 15px;
     border-radius: 10px;
 }
+.project-dynamic{
+    background-color: #FFF;
+    margin-top: 50px;
+    height:500px;
+}
+.every-active{
+    margin-top:20px;
+}
+.triangle-right {
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-right: 10px solid #b0b0b0;
+    border-bottom: 5px solid transparent;
+    position: relative;
+    top: 10px;
+    float: left;
+}
+.user-active{
+    float: left;
+    width: 30px;
+    border-radius: 50%;
+}
+.active-wrap{
+    padding:0;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+    float: left;
+    border:1px solid #ccc;
+    height: 70px;
+}
+.active-header {
+    border-bottom: 1px solid #ccc;
+    padding: 5px 10px;
+}
+.active-content{
+    padding: 5px 10px;
+    color: #666;
+}
+.active-title{
+    color: #FFF;
+    background: #F05F40;
+    border-radius: 10px;
+    display: inline-block;
+    min-width: 70px;
+    text-align: center;
+}
+.active-time{
+    color: #b0b0b0;
+    float: right;
+    font-size: 12px;
+}

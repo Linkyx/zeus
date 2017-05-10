@@ -2,9 +2,10 @@
 import time
 from django.shortcuts import render
 
-from utils import logger, render_json, get_users
+from utils import logger, render_json, get_users, get_all_users
 from models import Project
 from decorators import user_has_project, process_request
+from zeus.project_dynamic import create_dynamic
 
 
 @process_request
@@ -31,7 +32,7 @@ def create_project(request):
             img_first_name = '.'.join(img.name.split('.')[:-1])
             img_name = img_first_name + str(now)
             img_full_name = img_name + '.' + ext
-            img_path = os.path.join(os.path.dirname(__file__), 'static/images/', img_full_name)
+            img_path = os.path.join(os.path.dirname(__file__), 'static/images/app/', img_full_name)
             with open(img_path, 'wb') as f:
                 for item in img.chunks():
                     f.write(item)
@@ -43,9 +44,15 @@ def create_project(request):
         img_full_name = 'cover-internet.jpg'
     try:
         project = Project.objects.create_project(request=request, name=name, introduction=introduction,
-                                                 participant=participant, logo='/static/images/' + img_full_name)
+                                                 participant=participant, logo='/static/images/app/' + img_full_name)
     except Exception as e:
         logger.error(u"创建项目失败", e)
+        return render_json({'result': False, 'message': u"创建项目失败"})
+
+    # 生成项目动态
+    content = request.session['name'] + u"创建了项目"
+    title = u"创建项目"
+    create_dynamic(request=request, pid=project.pk,content=content, title=title)
 
     return render_json({'result': True, 'message': u"创建项目成功"})
 
@@ -131,3 +138,30 @@ def search_project(request):
     })
 
 
+def get_project_user(request):
+    """
+    获取项目所有用户
+    :param request:
+    :return:
+    """
+    pid = request.GET.get('pid', '')
+    try:
+        project = Project.objects.get(pk=pid)
+    except Exception as e:
+        logger.error(u"获取项目用户列表失败", e)
+        return render_json({'result': False})
+
+    uids = project.participant.split(",")
+    uids.append(project.owner)
+    # 获取所有用户
+    user_info = get_all_users(request)
+    user_list = []
+    # 过滤出当前项目下的用户
+    for uid in uids:
+        user = user_info[int(uid)]
+        name = user['name']
+
+    # for id, user in user_info.items():
+        user_list.append({'id': uid, 'text': name})
+
+    return render_json({'result': True, 'message': user_list})
