@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from functools import wraps
 
+import requests
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
@@ -22,7 +23,7 @@ def user_has_project(func):
                 return render(request, '500.html', {
                     'message': u'您无权进行该操作'
                 })
-        except Exception:
+        except Exception as e:
             return render(request, '500.html', {
                     'message': u'您无权进行该操作'
                 })

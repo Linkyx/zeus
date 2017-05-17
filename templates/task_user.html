@@ -1,35 +1,226 @@
 {% extends 'base.html' %}
+{% block nav-header %}
+    <div style=" border-bottom: 2px solid #E5E5E5;background-color: #FFF">
+        <ul class="task-tab">
+            <li><a class="border-bc" href="#task-today" aria-controls="task-today" role="tab" data-toggle="tab">今日任务</a>
+            </li>
+            <li><a href="#finish" aria-controls="finish" role="tab" data-toggle="tab">已完成</a></li>
+            <li><a href="#non-finish" aria-controls="non-finish" role="tab" data-toggle="tab">未完成</a></li>
+        </ul>
+    </div>
+{% endblock %}
 
 {% block content %}
-  <div class="row">
-      <div class="col-sm-10 col-sm-offset-1 task-content">
-          <div style=" border-bottom: 2px solid #E5E5E5;background-color: #FFF">
-              <ul class="task-tab">
-                  <li><a class="border-bc" href="#task-today" aria-controls="task-today" role="tab" data-toggle="tab">今日任务</a></li>
-                  <li><a href="#finish" aria-controls="finish" role="tab" data-toggle="tab">已完成</a></li>
-                  <li><a href="#non-finish" aria-controls="non-finish" role="tab" data-toggle="tab">未完成</a></li>
-              </ul>
-          </div>
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active " id="task-today">.1111..</div>
-            <div role="tabpanel" class="tab-pane" id="finish">.222..</div>
-            <div role="tabpanel" class="tab-pane" id="non-finish">.333..</div>
-          </div>
-      </div>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 task-content" style="margin-top: 50px;">
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active " id="task-today">
+                    <div class="mh task-user-wrap">
+                        {% for task in today_task %}
+                            {% if task.is_finish %}
+                                <div class="user-task col-sm-5 col-sm-offset-1" style="border-left: 5px solid #666">
+                                    <a href="###" tid="{{ task.tid }}" class="task-name">
+                                    <span class="fl mr20 text-hidden"
+                                          style="width:80px;"><s>{{ task.name }}</s></span>
+                                    </a>
+                                    <a href="###" tid="{{ task.tid }}" class="delete_task">
+                                    <span class="fr ml10">
+                                        <span class=" glyphicon glyphicon-remove remove-task"></span>
+                                    </span>
+                                    </a>
+                                    {% if  task.level == '1' %}
+                                        <span class="fr ml10" style="color: #666;">级别：低</span>
+                                    {% elif task.level == '2' %}
+                                        <span class="fr ml10" style="color: #666;">级别：中</span>
+                                    {% elif task.level == '3' %}
+                                        <span class="fr ml10" style="color: #666;">级别：高</span>
+                                    {% endif %}
+                                    <span class=" fr">
+                                    <span class="fr ml10">
+                                        <img src="{{ task.avatar }}" class="img-task" alt="user">
+                                    </span>
+                                    <span class="fr ml10 finish-time-1">{{ task.finish_time }}</span>
+                                    </span>
+                                </div>
+                            {% else %}
+                                {% if  task.level == '1' %}
+                                    <div class="user-task col-sm-5 col-sm-offset-1" style="border-left: 5px solid #666">
+                                {% elif task.level == '2' %}
+                                    <div class="user-task col-sm-5 col-sm-offset-1"
+                                         style="border-left: 5px solid #efa231">
+                                {% elif task.level == '3' %}
+                                    <div class="user-task col-sm-5 col-sm-offset-1"
+                                         style="border-left: 5px solid #F05F40">
+                                {% endif %}
+                            <a href="###" tid="{{ task.tid }}" class="task-name">
+                                <span class="fl mr20 text-hidden" style="width:80px;">{{ task.name }}</span>
+                            </a>
+                            <a href="###" tid="{{ task.tid }}" class="delete_task">
+                                            <span class="fr ml10">
+                                                <span class=" glyphicon glyphicon-remove remove-task"></span>
+                                            </span>
+                            </a>
+                            {% if  task.level == '1' %}
+                                <span class="fr ml10" style="color: #666;">级别：低</span>
+                            {% elif task.level == '2' %}
+                                <span class="fr ml10" style="color: #efa231;">级别：中</span>
+                            {% elif task.level == '3' %}
+                                <span class="fr ml10" style="color: #f05f40;">级别：高</span>
+                            {% endif %}
+                            <span class=" fr">
+                                            <span class="fr ml10">
+                                                <img src="{{ task.avatar }}" class="img-task" alt="user">
+                                            </span>
+                                            <span class="fr ml10 finish-time">{{ task.finish_time }}</span>
+                                            </span>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="finish">
+                            <div class="mh task-user-wrap">
+                                {% for task in finish_task %}
+                                    <div class="user-task col-sm-5 col-sm-offset-1" style="border-left: 5px solid #666">
+                                        <a href="###" tid="{{ task.tid }}" class="task-name">
+                                <span class="fl mr20 text-hidden"
+                                      style="width:80px;"><s>{{ task.name }}</s></span>
+                                        </a>
+                                        <a href="###" tid="{{ task.tid }}" class="delete_task">
+                                <span class="fr ml10">
+                                    <span class=" glyphicon glyphicon-remove remove-task"></span>
+                                </span>
+                                        </a>
+                                        {% if  task.level == '1' %}
+                                            <span class="fr ml10" style="color: #666;">级别：低</span>
+                                        {% elif task.level == '2' %}
+                                            <span class="fr ml10" style="color: #666;">级别：中</span>
+                                        {% elif task.level == '3' %}
+                                            <span class="fr ml10" style="color: #666;">级别：高</span>
+                                        {% endif %}
+                                        <span class=" fr">
+                                <span class="fr ml10">
+                                    <img src="{{ task.avatar }}" class="img-task" alt="user">
+                                </span>
+                                <span class="fr ml10 finish-time-1">{{ task.finish_time }}</span>
+                                </span>
+                                    </div>
 
-  </div>
-
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="non-finish">
+                            <div class="mh task-user-wrap">
+                                {% for task in unfinish_task %}
+                                    {% if  task.level == '1' %}
+                                        <div class="user-task col-sm-5 col-sm-offset-1"
+                                             style="border-left: 5px solid #666">
+                                    {% elif task.level == '2' %}
+                                        <div class="user-task col-sm-5 col-sm-offset-1"
+                                             style="border-left: 5px solid #efa231">
+                                    {% elif task.level == '3' %}
+                                        <div class="user-task col-sm-5 col-sm-offset-1"
+                                             style="border-left: 5px solid #F05F40">
+                                    {% endif %}
+                                <a href="###" tid="{{ task.tid }}" class="task-name">
+                                    <span class="fl mr20 text-hidden" style="width:80px;">{{ task.name }}</span>
+                                </a>
+                                <a href="###" tid="{{ task.tid }}" class="delete_task">
+                                    <span class="fr ml10">
+                                        <span class=" glyphicon glyphicon-remove remove-task"></span>
+                                    </span>
+                                </a>
+                                {% if  task.level == '1' %}
+                                    <span class="fr ml10" style="color: #666;">级别：低</span>
+                                {% elif task.level == '2' %}
+                                    <span class="fr ml10" style="color: #efa231;">级别：中</span>
+                                {% elif task.level == '3' %}
+                                    <span class="fr ml10" style="color: #f05f40;">级别：高</span>
+                                {% endif %}
+                                <span class=" fr">
+                                    <span class="fr ml10">
+                                        <img src="{{ task.avatar }}" class="img-task" alt="user">
+                                    </span>
+                                    <span class="fr ml10 finish-time">{{ task.finish_time }}</span>
+                                    </span>
+                                </div>
+                                {% endfor %}
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 任务详情-->
+    <div class="modal fade" id="infoTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 400px; min-width: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">任务详情</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="text-hidden mb20">
+                        <p style="font-weight: 700" class="dib">任务名：<span id="infoTaskName">asdas </span></p>
+                        <p style="font-weight: 700" class="dib fr mr50">所属项目：<span id="infoTaskofPro">123123 </span></p>
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label for="infoTaskIntro">任务内容</label>
+                            <textarea class="form-control" id="infoTaskIntro"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="infoTaskParticipant">任务参与者</label>
+                            <select class="form-control" style="width: 100%;" multiple="multiple"
+                                    id="infoTaskParticipant">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="infoTaskCreatetime">开始日期</label>
+                            <input type="text" id="infoTaskCreatetime" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="infoTaskFinishtime">截止日期</label>
+                            <input type="text" id="infoTaskFinishtime" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="infoTaskLevel">任务级别</label>
+                            <select type="text" class="form-control" id="infoTaskLevel" style="width:100%">
+                                <option value="1">低</option>
+                                <option value="2">中</option>
+                                <option value="3">高</option>
+                            </select>
+                        </div>
+                        <div class="checkbox">
+                            <label style="padding-left: 0; font-weight: 700">
+                                标记为已完成 <input type="checkbox" id="check-input">
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="update-task-btn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
 {% block js %}
-    <script src="/static/js/task.js"></script>
+    <script src="/static/js/task_user.js"></script>
     <script>
         $('.task-tab a').click(function (e) {
-          e.preventDefault()
-          $('.task-tab a').removeClass('border-bc');
-          $(this).addClass('border-bc')
+            e.preventDefault()
+            $('.task-tab a').removeClass('border-bc');
+            $(this).addClass('border-bc')
         })
     </script>
 {% endblock %}

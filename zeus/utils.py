@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import datetime
+import time
 from django.http import HttpResponse, HttpResponseRedirect
 import json
 import logging
@@ -95,3 +97,21 @@ def refresh_user_session(request,user_msg):
     request.session['job'] = user_msg['job']
     request.session['qq'] = user_msg['qq']
     request.session['wechat'] = user_msg['wechat']
+
+
+def checkTime(starttime, endtime):
+    """
+    判断日期是否在某个范围内
+    :param starttime:
+    :param endtime:
+    :return:
+    """
+    flag = False
+    now = datetime.datetime.now()
+
+    if now > starttime.replace(tzinfo=None) and now < endtime.replace(tzinfo=None):
+        flag = True
+    else:
+        flag = False
+
+    return flag

@@ -32,7 +32,10 @@ urlpatterns += patterns('zeus.project_views',
                         url(r'^create_project/$', 'create_project'),
                         url(r'^get_all_project/$', 'get_all_project'),
                         url(r'^search_project/$', 'search_project'),
-                        url(r'^get_project_user/$', 'get_project_user')
+                        url(r'^get_project_user/$', 'get_project_user'),
+                        url(r'^update_project_info/$', 'update_project_info'),
+                        url(r'^delete_project/$', 'delete_project'),
+                        url(r'^get_gantt_project/(?P<pid>\d+)/$', 'get_gantt_project')
                         )
 urlpatterns += patterns('zeus.authentication',
                         # 登陆校验,获取code进行并请求token
@@ -46,7 +49,9 @@ urlpatterns += patterns('zeus.task_views',
                         url(r'^create_task/$', 'create_task'),
                         url(r'^delete_task/$', 'delete_task'),
                         url(r'^get_all_task/$', 'get_all_task'),
+                        url(r'^update_task_info/$', 'update_task_info'),
                         url(r'^update_task_user/$', 'update_task_user'),
+                        url(r'^get_task_info/(?P<tid>\d+)/$', get_task_info),
                         url(r'^get_project_task/(?P<pid>\d+)$', 'get_project_task'),
                         )
 urlpatterns += patterns('zeus.message',
@@ -60,5 +65,6 @@ urlpatterns += patterns('zeus.views',
                         url(r'^index/$', 'index'),
                         url(r'^user_info/$', 'user_info'),
                         url(r'^get_all_user/$', 'get_all_user'),
+                        url(r'^get_full_user/$', 'get_full_user'),
                         url(r'^change_user_info/$', 'change_user_info'),
                         )

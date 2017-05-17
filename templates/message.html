@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
-
+{% block nav-header %}
+<div style=" border-bottom: 2px solid #E5E5E5; background-color: #FFF">
+    <ul class="message-tab">
+        <li><a class="border-bc" href="#non-read" aria-controls="non-read" role="tab" data-toggle="tab">未读</a></li>
+        <li><a href="#readed" aria-controls="readed" role="tab" data-toggle="tab">已读</a></li>
+    </ul>
+</div>
+{% endblock %}
 {% block content %}
   <div class="row">
       <div class="col-sm-10 col-sm-offset-1 task-content">
-          <div style=" border-bottom: 2px solid #E5E5E5; background-color: #FFF">
-              <ul class="message-tab">
-                  <li><a class="border-bc" href="#non-read" aria-controls="non-read" role="tab" data-toggle="tab">未读</a></li>
-                  <li><a href="#readed" aria-controls="readed" role="tab" data-toggle="tab">已读</a></li>
-              </ul>
-          </div>
           <!-- Tab panes -->
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active " id="non-read">.1111..</div>

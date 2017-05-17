@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from django.db import models
-
+import datetime
+from utils import checkTime
 
 class ProjectManager(models.Manager):
     """

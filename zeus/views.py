@@ -8,7 +8,7 @@ import re
 
 from decorators import process_request
 from models import Project
-from utils import render_json, get_users, refresh_user_session, logger
+from utils import render_json, get_users, refresh_user_session, logger, get_all_users
 
 
 def home(request):
@@ -98,11 +98,26 @@ def user_info(request):
 @process_request
 def get_all_user(request):
     """
-    获取所有用户
+    获取出当前用户外所有用户
     :param request:
     :return:
     """
     user_info = get_users(request)
+    user_list = []
+    for id, user in user_info.items():
+        user_list.append({'id': id, 'text': user['name']})
+
+    return render_json({'result': True, 'message': user_list})
+
+
+@process_request
+def get_full_user(request):
+    """
+        获取出当前用户外所有用户
+        :param request:
+        :return:
+        """
+    user_info = get_all_users(request)
     user_list = []
     for id, user in user_info.items():
         user_list.append({'id': id, 'text': user['name']})

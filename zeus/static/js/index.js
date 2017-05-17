@@ -2,7 +2,7 @@
  * Created by linky on 2017/5/1.
  */
 $(function(){
-    console.log("21312321312")
+
     // 初始化用户表单
     $('#participant-project').select2({
         tags: true,

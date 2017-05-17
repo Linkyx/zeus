@@ -3,7 +3,7 @@ import time
 from django.shortcuts import render
 
 from utils import logger, render_json, get_users, get_all_users
-from models import Project
+from models import Project, Task
 from decorators import user_has_project, process_request
 from zeus.project_dynamic import create_dynamic
 
@@ -138,6 +138,7 @@ def search_project(request):
     })
 
 
+@process_request
 def get_project_user(request):
     """
     获取项目所有用户
@@ -165,3 +166,129 @@ def get_project_user(request):
         user_list.append({'id': uid, 'text': name})
 
     return render_json({'result': True, 'message': user_list})
+
+
+@user_has_project
+@process_request
+def get_gantt_project(request, pid):
+    """
+    获取项目gantt图数据
+    :param request:
+    :return:
+    """
+    # 获取所有用户
+    user_info = get_all_users(request)
+    try:
+        tasks = Task.objects.filter(project_id=pid).filter(status=0)
+    except Exception as e:
+        logger.error(u"获取项目甘特图失败", e)
+        return render_json({"result": False})
+
+    COLORS = ['ganttRed', "ganttGreen", "ganttBlue", "ganttOrange"]
+    data = []
+
+    for task in tasks:
+        user_names = []
+        for id in task.participant.split(','):
+            user = user_info[int(id)]
+            user_names.append(user['name'])
+        begin = "/Date(" + str(int(time.mktime(task.begin_time.timetuple())*1000)) + ")/"
+        finish = "/Date(" + str(int(time.mktime(task.finish_time.timetuple())*1000)) + ")/"
+        data.append({
+            'name': task.name,
+            "desc": task.introduction,
+            "values": [{
+                "id": task.pk,
+                "from": begin,
+                "to": finish,
+                "label": (",").join(user_names),
+                "customClass": COLORS[task.pk % len(COLORS)]
+            }]
+        })
+    if not data:
+        empty = True
+    else:
+        empty = False
+    return render_json({'result': True, 'data': data, 'empty': empty})
+
+
+@process_request
+def update_project_info(request):
+    """
+    更新项目信息
+    :param request:
+    :return:
+    """
+    name = request.POST.get('pro_name', '')
+    introduction = request.POST.get('pro_intro', '')
+    participant = request.POST.get('pro_part', '')
+    img = request.FILES.get('pro_img', '')
+    pid = request.POST.get('pid', '')
+    # 获取项目当前信息
+    try:
+        project = Project.objects.filter(pk=pid)
+    except Exception as e:
+        logger.error(u"获取项目失败", e)
+        return render_json({'result': False, 'message': u'获取项目失败'})
+
+    if not name:
+        return render_json({'result': False, 'message': u'项目名不能为空'})
+
+    if img:
+        import os
+        try:
+            # 根据时间戳存储图片
+            now = int(time.time())
+            ext = img.name.split('.')[-1]
+            img_first_name = '.'.join(img.name.split('.')[:-1])
+            img_name = img_first_name + str(now)
+            img_full_name = img_name + '.' + ext
+            img_path = os.path.join(os.path.dirname(__file__), 'static/images/app/', img_full_name)
+            with open(img_path, 'wb') as f:
+                for item in img.chunks():
+                    f.write(item)
+        except Exception as e:
+            logger.error(u'图片写入失败', e)
+            return render_json({'result': False, 'message': u'图片写入失败'})
+    else:
+        # 原先背景图
+        img_path = project[0].logo.split('/')[-1]
+        img_full_name = img_path
+    try:
+        project.update(name=name, introduction=introduction,
+                       participant=participant, logo='/static/images/app/' + img_full_name)
+    except Exception as e:
+        logger.error(u"修改项目信息失败", e)
+        return render_json({'result': False, 'message': u"修改项目信息失败"})
+
+    # 生成项目动态
+    content = request.session['name'] + u"修改了项目信息"
+    title = u"项目信息修改"
+    create_dynamic(request=request, pid=pid, content=content, title=title)
+
+    return render_json({'result': True, 'message': u"项目信息修改成功"})
+
+
+@process_request
+def delete_project(request):
+    """
+    删除项目
+    :param request:
+    :return:
+    """
+    pid = request.POST.get('pid', '')
+
+    try:
+        project = Project.objects.filter(pk=pid).update(is_active=False)
+    except Exception as e:
+        logger.error(u"删除项目失败", e)
+        return render_json({'result': False, 'message': u"删除项目失败"})
+
+    # 将任务表中项目相关的任务标记为删除
+    try:
+        tasks = Task.objects.filter(project_id=pid).update(is_active=False)
+    except Exception as e:
+        logger.error(u"更改任务状态失败", e)
+        return render_json({'result': False, 'message': u"删除项目失败"})
+
+    return render_json({'result': True, 'message': u"删除项目成功"})

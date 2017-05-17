@@ -1,93 +1,154 @@
 {% extends 'base.html' %}
-
+{% block nav-header %}
+<div style=" border-bottom: 2px solid #E5E5E5;background-color: #FFF">
+    <ul class="task-tab-project">
+        <li><a class="border-bc" href="#task" aria-controls="task" role="tab" data-toggle="tab">项目任务</a>
+        </li>
+        <li><a href="#project-active" aria-controls="project-active" role="tab" data-toggle="tab">项目动态</a>
+        </li>
+        <li><a href="#project-file" aria-controls="project-file" role="tab" data-toggle="tab">项目文件</a></li>
+        <li><a href="#project-gant" aria-controls="roject-gant" role="tab" data-toggle="tab">甘特图</a></li>
+        <li><a href="#setting-project" aria-controls="setting-project" role="tab" data-toggle="tab">项目设置</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
 {% block content %}
-  <div class="row">
-      <div class="col-sm-10 col-sm-offset-1 task-content" pid="{{ pid }}">
-          <div style=" border-bottom: 2px solid #E5E5E5;background-color: #FFF">
-              <ul class="task-tab-project">
-                  <li><a class="border-bc" href="#task" aria-controls="task" role="tab" data-toggle="tab">项目任务</a></li>
-                  <li><a href="#project-active" aria-controls="project-active" role="tab" data-toggle="tab">项目动态</a></li>
-                  <li><a href="#project-file" aria-controls="project-file" role="tab" data-toggle="tab">项目文件</a></li>
-                  <li><a href="#project-gant" aria-controls="roject-gant" role="tab" data-toggle="tab">甘特图</a></li>
-                  <li><a href="#setting-project" aria-controls="setting-project" role="tab" data-toggle="tab">项目设置</a></li>
-              </ul>
-          </div>
-          <!-- Modal -->
+
+ <div class="gantt"></div>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 task-content" pid="{{ pid }}">
+            <!-- Modal -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document" style="width: 400px; min-width: 400px">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">新建任务</h4>
-              </div>
-              <div class="modal-body">
-                  <form>
-                      <div>
-                          <div style="margin: 0 auto; width: 100px; text-align: center">
-                         <span class="glyphicon glyphicon-menu-hamburger" style="font-size: 70px"> </span>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputTaskName">任务名</label>
-                        <input type="text" class="form-control" id="inputTaskName" placeholder="任务名">
-                      </div>
-                      <div class="form-group">
-                        <label for="inputTaskIntro">任务内容</label>
-                        <textarea  class="form-control" id="inputTaskIntro"></textarea>
-                      </div>
-                      <div class="form-group">
-                          <label for="participant-task">任务参与者</label>
-                          <select  class="form-control" style="width: 100%;" multiple="multiple"  id="participant-task">
-                          </select>
-                      </div>
-                      <div class="form-group">
-                          <label for="participant-createtime">开始日期</label>
-                           <input type="text" id="participant-createtime" class="form-control">
-                      </div>
-                      <div class="form-group">
-                          <label for="participant-finishtime">截止日期</label>
-                           <input type="text" id="participant-finishtime" class="form-control">
-                      </div>
-                      <div class="form-group">
-                        <label for="task-level">任务级别</label>
-                        <select type="text" class="form-control" id="task-level" style="width:100%"   >
-                            <option value="1">低</option>
-                            <option value="2">中</option>
-                            <option value="3">高</option>
-                        </select>
-                      </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-task">取消</button>
-                <button type="button" class="btn btn-primary" id="create-task-btn">创建</button>
-              </div>
-            </div>
-          </div>
-        </div>
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active " id="task">
-                <div class="col-sm-5 no-finish-task">
-                    <p  class="task-status">待完成</p>
-                    <div class="mh">
-                        <div class="every-task col-sm-12" style="border-left: 5px solid #F05F40">
-                            <a href="###" class="other-project-a"  data-toggle="modal" data-target="#myModal">
-                                <span class="glyphicon glyphicon-plus-sign" style="font-size: 30px; line-height: 50px; color: #F05F40;">
-                                </span>
-                                <span style="position: absolute; left: 100px; color: #F05F40;">增加任务</span>
-                            </a>
+                <div class="modal-dialog" role="document" style="width: 400px; min-width: 400px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">新建任务</h4>
                         </div>
-                        {% for task in unfinish_task %}
-                            {% if  task.level == '1' %}
-                                <div class="every-task col-sm-12" style="border-left: 5px solid #666">
-                            {% elif task.level == '2' %}
-                                <div class="every-task col-sm-12" style="border-left: 5px solid #efa231">
-                            {% elif task.level == '3' %}
-                                <div class="every-task col-sm-12" style="border-left: 5px solid #F05F40">
-                            {% endif %}
-                            <a href="###" tid="{{ task.tid }}">
-                            <span class="fl mr20 text-hidden" style="width:80px;">{{ task.name }}</span>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="inputTaskName">任务名</label>
+                                    <input type="text" class="form-control" id="inputTaskName" placeholder="任务名">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputTaskIntro">任务内容</label>
+                                    <textarea class="form-control" id="inputTaskIntro"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="participant-task">任务参与者</label>
+                                    <select class="form-control" style="width: 100%;" multiple="multiple"
+                                            id="participant-task">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="participant-createtime">开始日期</label>
+                                    <input type="text" id="participant-createtime" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="participant-finishtime">截止日期</label>
+                                    <input type="text" id="participant-finishtime" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="task-level">任务级别</label>
+                                    <select type="text" class="form-control" id="task-level" style="width:100%">
+                                        <option value="1">低</option>
+                                        <option value="2">中</option>
+                                        <option value="3">高</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-task">取消
+                            </button>
+                            <button type="button" class="btn btn-primary" id="create-task-btn">创建</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 任务详情-->
+            <div class="modal fade" id="infoTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document" style="width: 400px; min-width: 400px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">任务详情</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-hidden mb20">
+                                <p style="font-weight: 700" class="dib">任务名：<span id="infoTaskName">asdas </span></p>
+                                <p style="font-weight: 700" class="dib fr mr50">所属项目：<span id="infoTaskofPro">123123 </span></p>
+                            </div>
+                            <form>
+                                <div class="form-group">
+                                    <label for="infoTaskIntro">任务内容</label>
+                                    <textarea class="form-control" id="infoTaskIntro"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="infoTaskParticipant">任务参与者</label>
+                                    <select class="form-control" style="width: 100%;" multiple="multiple"
+                                            id="infoTaskParticipant">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="infoTaskCreatetime">开始日期</label>
+                                    <input type="text" id="infoTaskCreatetime" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="infoTaskFinishtime">截止日期</label>
+                                    <input type="text" id="infoTaskFinishtime" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="infoTaskLevel">任务级别</label>
+                                    <select type="text" class="form-control" id="infoTaskLevel" style="width:100%">
+                                        <option value="1">低</option>
+                                        <option value="2">中</option>
+                                        <option value="3">高</option>
+                                    </select>
+                                </div>
+                                <div class="checkbox">
+                                    <label style="padding-left: 0; font-weight: 700">
+                                        标记为已完成 <input type="checkbox" id="check-input">
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel">关闭
+                            </button>
+                            <button type="button" class="btn btn-primary" id="update-task-btn">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active " id="task">
+                    <div class="col-sm-5 no-finish-task">
+                        <p class="task-status">待完成</p>
+                        <div class="mh">
+                            <div class="every-task col-sm-12" style="border-left: 5px solid #F05F40">
+                                <a href="###" class="other-project-a" data-toggle="modal" data-target="#myModal">
+                                <span class="glyphicon glyphicon-plus-sign"
+                                      style="font-size: 30px; line-height: 50px; color: #F05F40;">
+                                </span>
+                                    <span style="position: absolute; left: 100px; color: #F05F40;">增加任务</span>
+                                </a>
+                            </div>
+                            {% for task in unfinish_task %}
+                                {% if  task.level == '1' %}
+                                    <div class="every-task col-sm-12" style="border-left: 5px solid #666">
+                                {% elif task.level == '2' %}
+                                    <div class="every-task col-sm-12" style="border-left: 5px solid #efa231">
+                                {% elif task.level == '3' %}
+                                    <div class="every-task col-sm-12" style="border-left: 5px solid #F05F40">
+                                {% endif %}
+                            <a href="###" tid="{{ task.tid }}" class="task-name">
+                                <span class="fl mr20 text-hidden" style="width:80px;">{{ task.name }}</span>
                             </a>
                             <a href="###" tid="{{ task.tid }}" class="delete_task">
                             <span class="fr ml10">
@@ -99,7 +160,7 @@
                             {% elif task.level == '2' %}
                                 <span class="fr ml10" style="color: #efa231;">级别：中</span>
                             {% elif task.level == '3' %}
-                                  <span class="fr ml10" style="color: #f05f40;">级别：高</span>
+                                <span class="fr ml10" style="color: #f05f40;">级别：高</span>
                             {% endif %}
                             <span class=" fr">
                             <span class="fr ml10">
@@ -108,69 +169,178 @@
                             <span class="fr ml10 finish-time">{{ task.finish_time }}</span>
                             </span>
 
+                            </div>
+                            {% endfor %}
+                            </div>
+                            </div>
+                            <div class="col-sm-5 col-sm-offset-2 finish-task">
+                                <p class="task-status">已完成</p>
+                                <div class="mh">
+                                    {% for task in finish_task %}
+                                        <div class="every-task col-sm-12"  style="border-left: 5px solid #666">
+                                            <a href="###" tid="{{ task.tid }}" class="task-name">
+                                                <span class="fl mr20 text-hidden"
+                                                      style="width:80px;"><s>{{ task.name }}</s></span>
+                                            </a>
+                                            <a href="###" tid="{{ task.tid }}" class="delete_task">
+                                            <span class="fr ml10">
+                                                <span class=" glyphicon glyphicon-remove remove-task"></span>
+                                            </span>
+                                            </a>
+                                            {% if  task.level == '1' %}
+                                                <span class="fr ml10" style="color: #666;">级别：低</span>
+                                            {% elif task.level == '2' %}
+                                                <span class="fr ml10" style="color: #666;">级别：中</span>
+                                            {% elif task.level == '3' %}
+                                                <span class="fr ml10" style="color: #666;">级别：高</span>
+                                            {% endif %}
+                                            <span class=" fr">
+                                            <span class="fr ml10">
+                                                <img src="{{ task.avatar }}" class="img-task" alt="user">
+                                            </span>
+                                            <span class="fr ml10 finish-time-1">{{ task.finish_time }}</span>
+                                            </span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="col-sm-5 col-sm-offset-2 finish-task">
-                    <p class="task-status">已完成</p>
-                    <div class="mh">
-                        {% for task in finish_task %}
-                        <div class="every-task col-sm-12">
-                            <a href="###" tid="{{ task.tid }}">
-                            <span class="fl mr20 text-hidden" style="width:80px;"><s>{{ task.name }}</s></span>
-                            </a>
-                            <a href="###" tid="{{ task.tid }}" class="delete_task">
-                            <span class="fr ml10">
-                                <span class=" glyphicon glyphicon-remove remove-task"></span>
-                            </span>
-                            </a>
-                            {% if  task.level == '1' %}
-                                <span class="fr ml10" style="color: #666;">级别：低</span>
-                            {% elif task.level == '2' %}
-                                <span class="fr ml10" style="color: #666;">级别：中</span>
-                            {% elif task.level == '3' %}
-                                  <span class="fr ml10" style="color: #666;">级别：高</span>
-                            {% endif %}
-                            <span class=" fr">
-                            <span class="fr ml10">
-                                <img src="{{ task.avatar }}" class="img-task" alt="user">
-                            </span>
-                            <span class="fr ml10 finish-time-1">{{ task.finish_time }}</span>
-                            </span>
+                        <div role="tabpanel" class="tab-pane" id="project-active">
+                            <div class="project-dynamic col-sm-12" id="project-dynamic">
+                                {% for dynamic in dynamic_list %}
+                                    <div class="col-sm-8 col-sm-offset-2 every-active">
+                                        <img src="{{ dynamic.avatar }}" alt="user" class="user-active">
+                                        <p class="triangle-right"></p>
+                                        <section class="active-wrap col-sm-10">
+                                            <header class="active-header">
+                                                <span class="active-title">{{ dynamic.title }}</span>
+                                                <span class="glyphicon glyphicon-time active-time">{{ dynamic.create_time }}</span>
+                                            </header>
+                                            <div class="active-content">{{ dynamic.content }}</div>
+                                        </section>
+                                    </div>
+                                {% endfor %}
+                            </div>
 
                         </div>
-                        {% endfor %}
+                        <div role="tabpanel" class="tab-pane" id="project-file">
+                            <div style="clear: both; background-color: #FFF" class="col-sm-10 col-sm-offset-1 mh mt50">
+                                <div class="file-title">  <p>文件列表</p> </div>
+                                <div id="upload-file" class="fr">
+                                    <input id="upload-project-file" type="file" name="f">
+                                    <div class="project-upload">上传文件</div>
+                                </div>
+                                <hr style="clear: both;">
+                                <table class="table table-hover" id="file-table">
+                                    <thead>
+                                    <tr>
+                                        <th>名称</th>
+                                        <th>大小</th>
+                                        <th>上传者</th>
+                                        <th>上传时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-file-word-o fa-2x" style="color: blue;"></i><span class="ml10">asdasdsa</span></td>
+                                        <td>Bangalore</td>
+                                        <td>Tanmay</td>
+                                        <td>Bangalore</td>
+                                        <td><a href="###" class="mr10" title="下载"><span class="glyphicon glyphicon-download"></span></a>
+                                            <a href="###" title="删除"><span class="glyphicon glyphicon-remove"></span></a>
+                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-file-word-o fa-2x" style="color: blue;"></i><span class="ml10">asdasdsa</span></td>
+                                        <td>Mumbai</td>
+                                        <td>Tanmay</td>
+                                        <td>Bangalore</td>
+                                        <td><a href="###" class="mr10" title="下载"><span class="glyphicon glyphicon-download"></span></a>
+                                            <a href="###" title="删除"><span class="glyphicon glyphicon-remove"></span></a>
+                                         </td>
+                                    </tr>
+                                     <tr>
+                                         <td><i class="fa fa-file-excel-o fa-2x" style="color: green;"></i><span class="ml10">asdasdsa</span></td>
+                                         <td>Mumbai</td>
+                                         <td>Tanmay</td>
+                                         <td>Bangalore</td>
+                                         <td><a href="###" class="mr10" title="下载"><span class="glyphicon glyphicon-download"></span></a>
+                                            <a href="###" title="删除"><span class="glyphicon glyphicon-remove"></span></a>
+                                         </td>
+                                    </tr>
+                                     <tr>
+                                         <td><i class="fa fa-file-pdf-o fa-2x" style="color: red;"></i><span class="ml10">asdasdsa</span></td>
+                                         <td>Mumbai</td>
+                                         <td>Tanmay</td>
+                                         <td>Bangalore</td>
+                                         <td><a href="###" class="mr10" title="下载"><span class="glyphicon glyphicon-download"></span></a>
+                                            <a href="###" title="删除"><span class="glyphicon glyphicon-remove"></span></a>
+                                         </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane " id="project-gant">
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="setting-project">
+                            <div class="col-sm-10 col-sm-offset-1"  style="margin-top: 50px;">
+                                {% if project_owner %}
+                                <form class="form-horizontal">
+                                       <div class="form-group mb">
+                                            <label for="inputProName" class="col-sm-2 control-label">项目名</label>
+                                            <div class="col-sm-8">
+                                              <input type="text" class="form-control" id="inputProName" placeholder="项目名" value="{{ project_info.project_name }}">
+                                            </div>
+                                       </div>
+                                      <div class="form-group mb">
+                                          <label for="inputProIntro" class="col-sm-2 control-label">项目简介</label>
+                                          <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="inputProIntro" placeholder="项目简介" value="{{ project_info.project_intro }}">
+                                          </div>
+                                      </div>
+                                       <div class="form-group mb">
+                                          <label for="inputProUser" class="col-sm-2 control-label">参与者</label>
+                                          <div class="col-sm-8">
+                                            <select class="form-control" style="width: 100%;" multiple="multiple" id="inputProUser">
+                                            </select>
+                                          </div>
+                                      </div>
+                                       <div class="form-group mb">
+                                          <label for="inputPrologo" class="col-sm-2 control-label">项目封面</label>
+                                          <div class="col-sm-8">
+                                              <img id="preview" style="width: 200px;" src="{{ project_info.project_logo }}" alt="">
+                                              <div style="display: inline-block; margin-left: 50px">
+                                                  <input type="file" id="reload-f">
+                                                  <div class="re-upload">重新上传</div>
+                                              </div>
+                                              <span style="font-size: 12px; color: #666;">（建议大小280*150）</span>
+                                          </div>
+                                       </div>
+                                    <div class="form-group mb">
+                                           <div class="col-sm-4 col-sm-offset-2">
+                                               <a class="btn btn-primary btn-block save-handler" id="project-info-save" style="background-color: #337ab7;border: none">保存
+                                               </a>
+                                           </div>
+                                        <div class="col-sm-4">
+                                               <a class="btn btn-primary btn-block save-handler" id="project-info-delete" style="background-color: #F05F40;border: none">删除项目
+                                               </a>
+                                           </div>
+                                       </div>
+                                   </form>
+                                {% else %}
+                                    <p  style="font-size: 80px;text-align: center"><span class="glyphicon glyphicon-eye-close"></span></p>
+                                    <p  style="font-size: 15px;text-align: center">只有项目管理员可以修改项目信息哦~</p>
+                                {% endif %}
+                               </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="project-active">
-                <div class="project-dynamic col-sm-12" id="project-dynamic">
-                    {% for dynamic in dynamic_list %}
-                    <div class="col-sm-8 col-sm-offset-2 every-active">
-                        <img src="{{ dynamic.avatar }}" alt="user" class="user-active">
-                        <p class="triangle-right"></p>
-                        <section class="active-wrap col-sm-10">
-                            <header class="active-header">
-                                <span class="active-title">{{ dynamic.title }}</span>
-                                <span class="glyphicon glyphicon-time active-time">{{ dynamic.create_time }}</span>
-                            </header>
-                            <div class="active-content">{{ dynamic.content }}</div>
-                        </section>
-                    </div>
-                    {% endfor %}
-                </div>
-
-            </div>
-            <div role="tabpanel" class="tab-pane" id="project-file">.4444.</div>
-            <div role="tabpanel" class="tab-pane" id="project-gant">.55555.</div>
-            <div role="tabpanel" class="tab-pane" id="setting-project">.666666.</div>
-          </div>
-      </div>
-
-  </div>
-
-
+        </div>
+    </div>
 {% endblock %}
 
 {% block js %}
