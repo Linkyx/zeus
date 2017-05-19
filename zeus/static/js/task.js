@@ -147,7 +147,7 @@ $(function(){
                     console.log("dsasad")
                 }else{
                     console.log("11111111")
-                    var str = '<p style="text-align: center">暂无数据</p>'
+                    var str = '<p style="text-align: center; margin-top: 50px;">暂无数据</p>'
                     $('#project-gant').append(str)
                     $('.gantt').remove()
                 }
@@ -403,4 +403,139 @@ $(function(){
             }
         })
     })
+
+    /// 上传项目文件
+    $('#upload-project-file').on('change', change_file);
+
+    function change_file() {
+           var file = document.getElementById("upload-project-file");
+           fileReader(file);
+    }
+
+    function fileReader(file) {
+        var file = file.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+        var data = new FormData();
+        data.append('file', file);
+        data.append('pid', pid);
+        $.ajax({
+            url: '/upload_project_file/',
+            type:'POST',
+            dataType:'json',
+            data: data,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function(res){
+                if (res.result){
+                    console.log(res.data)
+                    layer.msg('上传文件成功', {icon: 6, time: 2000},function(){
+                        var type = 'fa-file'
+                        var color = 'gray'
+                        for (var index in res.data) {
+                            console.log(res)
+                            if (res.data[index]["ext"] == 'doc' || res.data[index]["ext"] == 'docx' || res.data[index]["ext"] == 'wps') {
+                                color = 'blue'
+                                type = "fa-file-word-o"
+                            } else if (res.data[index]["ext"] == 'xls' ||res.data[index]["ext"] == 'xlsx') {
+                                color = 'green'
+                                type = "fa-file-excel-o"
+                            } else if (res.data[index]["ext"] == 'pdf') {
+                                color = 'red'
+                                type = "fa-file-pdf-o"
+                            }
+
+                            $('#file-table tbody').append(
+                                '<tr> ' +
+                                '<td><i class="fa ' + type + ' fa-2x" style="color:' + color + ';"></i>' +
+                                '<span class="ml10">' + res.data[index]["name"] + '</span></td>' +
+                                ' <td>' + res.data[index]["size"] + '</td>' +
+                                ' <td>' + res.data[index]["user"] + '</td> ' +
+                                '<td>' + res.data[index]["create_time"] + '</td>' +
+                                ' <td><a href="/downloadFile?fid=' + res.data[index]["fid"] + '" class="mr10" title="下载">' +
+                                '<span class="glyphicon glyphicon-download"></span></a>' +
+                                ' <a href="###" title="删除" fid='+ res.data[index]["fid"]+' class="delete_file"><span class="glyphicon glyphicon-remove"></span>' +
+                                '</a> </td> </tr>'
+                            )
+                        }
+                        $('.delete_file').click(delete_file)
+                    });
+                }else{
+                     layer.msg(res.message, {icon: 5});
+                }
+            }
+        })
+        }
+    }
+    //获取项目文件
+    $.ajax({
+            url: "/get_project_file/" + pid,
+            type: 'GET',
+            dataType: 'json',
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function(res){
+                if (res.result){
+                    $('#file-table tbody').html('')
+                    console.log(res.data)
+                    var type = 'fa-file'
+                    var color = 'gray'
+                        for(var index in res.data) {
+                        if(res.data[index]["ext"] == 'doc' || res.data[index]["ext"] == 'docx'|| res.data[index]["ext"] == 'wps'){
+                            color = 'blue'
+                            type = "fa-file-word-o"
+                        }else if(res.data[index]["ext"] == 'xls' || res.data[index]["ext"] == 'xlsx'){
+                            color = 'green'
+                            type = "fa-file-excel-o"
+                        }else if(res.data[index]["ext"] == 'pdf'){
+                            color = 'red'
+                            type = "fa-file-pdf-o"
+                        }
+
+                        $('#file-table tbody').append(
+                                '<tr> ' +
+                                '<td><i class="fa '+type+' fa-2x" style="color:'+color+';"></i>' +
+                                '<span class="ml10">'+res.data[index]["name"]+'</span></td>' +
+                                ' <td>'+res.data[index]["size"]+'</td>' +
+                                ' <td>'+res.data[index]["user"]+'</td> ' +
+                                '<td>'+res.data[index]["create_time"]+'</td>' +
+                                ' <td><a href="/downloadFile?fid='+res.data[index]["fid"]+'" class="mr10" title="下载">' +
+                                '<span class="glyphicon glyphicon-download"></span></a>' +
+                                ' <a href="###" title="删除" fid='+ res.data[index]["fid"] +' class="delete_file"><span class="glyphicon glyphicon-remove"></span>' +
+                                '</a> </td> </tr>'
+                            )
+                        }
+                         $('.delete_file').click(delete_file)
+                }else{
+                     layer.msg(res.message, {icon: 5});
+                }
+            }
+        })
+    // 删除文件
+    var delete_file = function(event){
+        var fid = $(this).attr("fid")
+        var data = new FormData();
+        var $this = $(this)
+
+        data.append('fid', fid);
+
+        $.ajax({
+            url: "/delete_file/",
+            type: 'POST',
+            dataType: 'json',
+            data: data,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function(res){
+                if (res.result){
+                    layer.msg('删除文件成功', {icon: 6, time: 2000},function(){
+                        $($this.parents('tr')).remove()
+                    });
+                }else{
+                     layer.msg(res.message, {icon: 5});
+                }
+            }
+        })
+    }
 })

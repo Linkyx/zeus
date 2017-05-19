@@ -20,11 +20,12 @@ def task_index(request):
     :param request:
     :return:
     """
+    uid = request.session['id']
     # 获取所用用户信息
     users = get_all_users(request)
     try:
-        nofinish_tasks = Task.objects.filter(status=0).order_by('-level')
-        finish_tasks = Task.objects.filter(status=2).order_by('-level')
+        nofinish_tasks = Task.objects.filter(status=0).filter(owner=uid).order_by('-level')
+        finish_tasks = Task.objects.filter(status=2).filter(owner=uid).order_by('-level')
     except Exception as e:
         logger.error(u"查询任务失败", e)
         return render_json({'result': False})

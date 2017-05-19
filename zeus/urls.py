@@ -35,6 +35,10 @@ urlpatterns += patterns('zeus.project_views',
                         url(r'^get_project_user/$', 'get_project_user'),
                         url(r'^update_project_info/$', 'update_project_info'),
                         url(r'^delete_project/$', 'delete_project'),
+                        url(r'^upload_project_file/$', 'upload_project_file'),
+                        url(r'^downloadFile/$', 'downloadFile'),
+                        url(r'^delete_file/$', 'delete_file'),
+                        url(r'^get_project_file/(?P<pid>\d+)/$', 'get_project_file'),
                         url(r'^get_gantt_project/(?P<pid>\d+)/$', 'get_gantt_project')
                         )
 urlpatterns += patterns('zeus.authentication',

@@ -1,9 +1,13 @@
 # -*- coding:utf-8 -*-
 import time
+import codecs
+
+from django.http import HttpResponse
+from django.http import StreamingHttpResponse
 from django.shortcuts import render
 
-from utils import logger, render_json, get_users, get_all_users
-from models import Project, Task
+from utils import logger, render_json, get_users, get_all_users, formatSize
+from models import Project, Task, ProjectFile
 from decorators import user_has_project, process_request
 from zeus.project_dynamic import create_dynamic
 
@@ -292,3 +296,140 @@ def delete_project(request):
         return render_json({'result': False, 'message': u"删除项目失败"})
 
     return render_json({'result': True, 'message': u"删除项目成功"})
+
+
+@process_request
+def upload_project_file(request):
+    """
+    上传项目文件
+    :param request:
+    :return:
+    """
+    # 获取所有用户
+    user_info = get_all_users(request)
+
+    file = request.FILES.get('file', '')
+    pid = request.POST.get('pid', '')
+
+    name = file.name
+    user = request.session['id']
+    import os
+    try:
+        # 根据时间戳存储文件
+        now = int(time.time())
+        ext = file.name.split('.')[-1]
+        file_first_name = '.'.join(file.name.split('.')[:-1])
+        file_name = file_first_name + str(now)
+        file_full_name = file_name + '.' + ext
+        file_path = os.path.join(os.path.dirname(__file__), 'static/appfile/', file_full_name)
+        with open(file_path, 'wb') as f:
+            for item in file.chunks():
+                f.write(item)
+    except Exception as e:
+        logger.error(u'文件写入失败', e)
+        return render_json({'result': False, 'message': u'文件写入失败'})
+
+    # 获取文件大小
+
+    try:
+        size = os.path.getsize(file_path)
+        new_size = formatSize(size)
+    except Exception as e:
+        logger.error(u"获取文件大小失败", e)
+        return render_json({'result': False, 'message': u"获取文件大小失败"})
+    try:
+       file = ProjectFile.objects.create(project_id=pid, name=name, user=user, size=new_size, path='static/appfile/' + file_full_name)
+    except Exception as e:
+        logger.error(u"上传文件失败", e)
+        return render_json({'result': False, 'message': u"上传文件失败"})
+
+    file_list = []
+    user = user_info[int(file.user)]
+    name = user['name']
+    ext = file.path.split('.')[-1]
+    file_list.append({
+        'fid': file.pk,
+        'name': file.name,
+        'size': file.size,
+        'user': name,
+        'path': file.path,
+        'ext': ext,
+        'create_time': file.create_time.strftime('%Y-%m-%d')
+    })
+    return render_json({'result': True, 'data': file_list})
+
+
+@process_request
+def get_project_file(request, pid):
+    """
+    获取项目下文件
+    :param request:
+    :return:
+    """
+    # 获取所有用户
+    user_info = get_all_users(request)
+
+    files = ProjectFile.objects.filter(project_id=pid)
+    file_list = []
+    for file in files:
+        user = user_info[int(file.user)]
+        name = user['name']
+        ext = file.path.split('.')[-1]
+        file_list.append({
+            'fid': file.pk,
+            'name': file.name,
+            'size': file.size,
+            'user': name,
+            'path': file.path,
+            'ext': ext,
+            'create_time': file.create_time.strftime('%Y-%m-%d')
+        })
+    return render_json({'result': True, 'data': file_list})
+
+
+def delete_file(request):
+    """
+    删除文件
+    :param request:
+    :return:
+    """
+    fid = request.POST.get('fid', '')
+
+    try:
+        ProjectFile.objects.filter(pk=fid).update(is_active=False)
+    except Exception as e:
+        logger.error(u"删除文件失败", e)
+        return render_json({'result': False, 'message': u"删除文件失败"})
+    return render_json({'result': True})
+
+@process_request
+def downloadFile(request):
+    """
+    下载文件
+    :param req:
+    :return:
+    """
+    fid = request.GET.get('fid', '')
+
+    import os
+    try:
+        file = ProjectFile.objects.get(pk=fid)
+    except Exception as e:
+        logger.error(u"获取文件失败", e)
+        file = ''
+    file_path = os.path.join(os.path.dirname(__file__), file.path)
+
+    def file_iterator(fn, buf_size=262144):  # 大文件下载，设定缓存大小
+        f = open(fn, "rb")
+        while True:  # 循环读取
+            c = f.read(buf_size)
+            if c:
+                yield c
+            else:
+                break
+        f.close()
+    response = HttpResponse(file_iterator(file_path))
+    response['Content-Type'] = 'application/octet-stream'
+    filename = file.path.split('/')[-1].encode("utf-8")
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(filename)
+    return response

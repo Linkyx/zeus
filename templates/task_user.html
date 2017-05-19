@@ -17,6 +17,9 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active " id="task-today">
                     <div class="mh task-user-wrap">
+                        {% if not today_task %}
+                            <p style="margin-top: 50px; text-align: center">暂无数据</p>
+                        {% endif %}
                         {% for task in today_task %}
                             {% if task.is_finish %}
                                 <div class="user-task col-sm-5 col-sm-offset-1" style="border-left: 5px solid #666">
@@ -81,6 +84,9 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="finish">
                             <div class="mh task-user-wrap">
+                                {% if not finish_task %}
+                                    <p style="margin-top: 50px; text-align: center">暂无数据</p>
+                                {% endif %}
                                 {% for task in finish_task %}
                                     <div class="user-task col-sm-5 col-sm-offset-1" style="border-left: 5px solid #666">
                                         <a href="###" tid="{{ task.tid }}" class="task-name">
@@ -112,6 +118,9 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="non-finish">
                             <div class="mh task-user-wrap">
+                                {% if not unfinish_task %}
+                                    <p style="margin-top: 50px; text-align: center">暂无数据</p>
+                                {% endif %}
                                 {% for task in unfinish_task %}
                                     {% if  task.level == '1' %}
                                         <div class="user-task col-sm-5 col-sm-offset-1"

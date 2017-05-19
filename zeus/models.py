@@ -269,3 +269,33 @@ class ProjectDynamic(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class ProjectFileManager(models.Manager):
+    """
+    文件方法表
+    """
+    def get_queryset(self):
+        return super(ProjectFileManager, self).get_queryset().filter(is_active=True)
+
+
+class ProjectFile(models.Model):
+    """
+    项目文件
+    """
+    name = models.CharField(u"文件名", max_length=255, blank=True, null=True)
+    user = models.CharField(u"上传者", max_length=255, blank=True, null=True)
+    size = models.CharField(u"文件大小", max_length=255, blank=True, null=True)
+    create_time = models.DateTimeField(u"上传时间", auto_now=True)
+    path = models.CharField(u"文件路径", max_length=255, blank=True, null=True)
+    project_id = models.CharField(u"项目id", max_length=32, blank=True, null=True)
+    is_active = models.BooleanField(u'是否未删除', default=True)
+
+    objects = ProjectFileManager()
+
+    class Meta:
+        verbose_name = u'项目文件'
+        verbose_name_plural = u'项目文件'
+
+    def __unicode__(self):
+        return self.name
